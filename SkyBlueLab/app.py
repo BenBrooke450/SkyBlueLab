@@ -43,11 +43,29 @@ elif choice == "OCEAN":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png", width=75)
         st.title("Science Filters")
-        st.date_input("Research Date")
-        st.button("Download ESA Data")
+        if "science_auth" not in st.session_state:
+            st.session_state.science_auth = False
 
-    st.header("Exploration Hub")
-    st.write("Deep space telemetry goes here.")
+        if not st.session_state.science_auth:
+            st.write("OceanBlue Restricted: Please Enter Pin")
+            pin = st.text_input("Enter Code", type="password")
+
+            if st.button("Unlock"):
+                if pin == "2026":
+                    st.session_state.science_auth = True
+                    st.rerun()
+                else:
+                    st.error("Invalid Code")
+        else:
+            if st.button("Log Out of Science Hub"):
+                st.session_state.science_auth = False
+                st.rerun()
+
+            from BlueOcean.ocean_app import run_ocean
+            run_ocean()
+
+    st.header("OceanBlue")
+    st.write("This is my personal LLM, please use the tab on the left for access")
 
 elif choice == "LAB":
     with st.sidebar:
