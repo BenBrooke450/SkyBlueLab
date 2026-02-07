@@ -7,15 +7,27 @@ import os
 
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-#from BlueOcean.ocean_app import run_ocean
-#from Other_project.train import run_lab
 
-#st.set_page_config(layout="wide")
+
+
+import sys
+from pathlib import Path
+
+folder_a_path = Path(__file__).resolve().parent.parent
+
+if str(root_path) not in sys.path:
+    sys.path.insert(0, str(root_path))
+
+from BlueOcean.ocean_app import run_ocean
+
+
+
+
 
 choice = option_menu(
     menu_title=None,
-    options=["HOME", "OCEAN", "LAB", "PROJECTS"],
-    icons=["flower1", "tsunami", "infinity", "map"],
+    options=["HOME", "OCEAN", "LAB", "RESEARCH"],
+    icons=["flower1", "tsunami", "infinity", "file-earmark-person"],
     menu_icon="cast",
     default_index=0,
     orientation="horizontal",
@@ -32,17 +44,13 @@ if choice == "HOME":
         st.image("SkyBlueLab/Cropped.png",width=75)
         st.title("Home Information")
         st.radio("View Mode", ["Standard", "Compact"])
-        st.checkbox("Show Lab Announcements")
 
-
-    st.header("Welcome to the Lab")
-    st.title("SkyBlueLab Gateway")
-    st.write("Welcome to the main portal.")
+    st.header("Welcome to the SkyBlueLab")
 
 elif choice == "OCEAN":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png", width=75)
-        st.title("Science Filters")
+        st.title("Ocean Blue")
         if "science_auth" not in st.session_state:
             st.session_state.science_auth = False
 
@@ -55,13 +63,12 @@ elif choice == "OCEAN":
                     st.session_state.science_auth = True
                     st.rerun()
                 else:
-                    st.error("Invalid Code")
+                    st.error("Hmm... Invalid Code")
         else:
             if st.button("Log Out of Science Hub"):
                 st.session_state.science_auth = False
                 st.rerun()
 
-            from BlueOcean.ocean_app import run_ocean
             run_ocean()
 
     st.header("OceanBlue")
@@ -76,11 +83,10 @@ elif choice == "LAB":
     st.header("Active Missions")
     st.write("Tracking SkyBlue-1 Satellite.")
 
-elif choice == "PROJECTS":
+elif choice == "RESEARCH":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png", width=75)
-        st.title("Mission Status")
-        st.success("All Systems Nominal")
+        st.title("")
 
-    st.header("Active Missions")
-    st.write("Tracking SkyBlue-1 Satellite.")
+    st.header("Research Papers")
+
