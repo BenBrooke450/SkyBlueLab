@@ -39,6 +39,7 @@ choice = option_menu(
     }
 )
 
+
 if choice == "HOME":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png",width=75)
