@@ -4,6 +4,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import sys
 import os
+import streamlit.components.v1 as components
 
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -26,8 +27,8 @@ from BlueOcean.ocean_app import run_ocean
 
 choice = option_menu(
     menu_title=None,
-    options=["HOME", "OCEAN", "LAB", "RESEARCH & CERTIFICATES"],
-    icons=["flower1", "tsunami", "infinity", "file-earmark-person"],
+    options=["HOME", "OCEAN", "PROJECTS", "RESEARCH & CERTIFICATES"],
+    icons=["flower1", "tsunami", "bi bi-floppy-fill", "file-earmark-person"],
     menu_icon="cast",
     default_index=0,
     orientation="horizontal",
@@ -44,31 +45,50 @@ if choice == "HOME":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png",width=75)
         st.title("Home Information")
-        st.write("Benjamin Brooke")
+        st.header("Benjamin Brooke")
+        st.subheader("Data Scientist & AI Engineer")
         col1, col2, col3 = st.columns(3)
+
 
         with col1:
             st.markdown("""
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
                 
                 <div style="
-                    border:1px solid #ccc;
-                    padding:10px;
-                    border-radius:10px;
-                    width:120px;
+                    border:2px solid #ccc;
+                    padding:20px;
+                    border-radius:15px;
+                    width:100px;
                     text-align:center;
                     ">
                 
                 <a href="https://github.com/BenBrooke450" target="_blank">
-                    <i class="fa-brands fa-square-github" style="font-size:40px;"></i>
-                </a>
-
-                <a href="https://www.linkedin.com/in/benjamin-brooke-097063159/" target="_blank">
-                    <i class="fa-brands fa-linkedin" style="font-size:40px;"></i>
+                    <i class="fa-brands fa-square-github" style="font-size:40px; color:grey; margin-right:0px;"></i>
                 </a>
                 
                 </div>
                 """, unsafe_allow_html=True)
+
+            with col2:
+                st.markdown("""
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+                    <div style="
+                        border:2px solid #ccc;
+                        padding:20px;
+                        border-radius:15px;
+                        width:100px;
+                        text-align:center;
+                        ">
+
+                    <a href="https://www.linkedin.com/in/benjamin-brooke-097063159/">
+                        <i class="fa-brands fa-linkedin" style="font-size:40px; color:grey;"></i>
+                    </a>
+
+                    </div>
+                    """, unsafe_allow_html=True)
+
+
 
 
     st.header("Welcome to the SkyBlueLab")
@@ -102,14 +122,12 @@ elif choice == "OCEAN":
     st.header("OceanBlue")
     st.write("This is my personal LLM, please use the tab on the left for access")
 
-elif choice == "LAB":
+elif choice == "PROJECTS":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png", width=75)
-        st.title("Mission Status")
         st.success("All Systems Nominal")
 
-    st.header("Active Missions")
-    st.write("Tracking SkyBlue-1 Satellite.")
+    st.write("Projects")
 
 elif choice == "RESEARCH & CERTIFICATES":
     with st.sidebar:
