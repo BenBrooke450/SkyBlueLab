@@ -44,9 +44,26 @@ if choice == "HOME":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png",width=75)
         st.title("Home Information")
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown(
+                '<a href="https://github.com/BenBrooke450" target="_blank">'
+                '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" width="20"></a>',
+                unsafe_allow_html=True
+            )
+
+        with col2:
+            st.markdown(
+                '<a href="https://www.linkedin.com/in/benjamin-brooke-097063159/" target="_blank">'
+                '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" width="20"></a>',
+                unsafe_allow_html=True
+            )
         st.radio("View Mode", ["Standard", "Compact"])
 
     st.header("Welcome to the SkyBlueLab")
+    st.write("Senior Data Scientist with 5+ years of experience building ETL pipelines and 2+ years building ML systems for clinical research. Specialised in clinical NLP, distributed data pipelines (PySpark, Databricks), and deep learning with PyTorch. Deployed production ML systems that improved clinical data processing efficiency and decision support. Experienced in building end-to-end ML pipelines, including feature engineering, model training, deployment, and monitoring.")
+
 
 elif choice == "OCEAN":
     with st.sidebar:
