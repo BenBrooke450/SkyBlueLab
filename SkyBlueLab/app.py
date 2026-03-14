@@ -26,7 +26,7 @@ from BlueOcean.ocean_app import run_ocean
 
 choice = option_menu(
     menu_title=None,
-    options=["HOME", "OCEAN", "LAB", "RESEARCH"],
+    options=["HOME", "OCEAN", "LAB", "RESEARCH & CERTIFICATES"],
     icons=["flower1", "tsunami", "infinity", "file-earmark-person"],
     menu_icon="cast",
     default_index=0,
@@ -44,22 +44,32 @@ if choice == "HOME":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png",width=75)
         st.title("Home Information")
-        col1, col2 = st.columns(2)
+        st.write("Benjamin Brooke")
+        col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.markdown(
-                '<a href="https://github.com/BenBrooke450" target="_blank">'
-                '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" width="20"></a>',
-                unsafe_allow_html=True
-            )
+            st.markdown("""
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+                
+                <div style="
+                    border:1px solid #ccc;
+                    padding:10px;
+                    border-radius:10px;
+                    width:120px;
+                    text-align:center;
+                    ">
+                
+                <a href="https://github.com/BenBrooke450" target="_blank">
+                    <i class="fa-brands fa-square-github" style="font-size:40px;"></i>
+                </a>
 
-        with col2:
-            st.markdown(
-                '<a href="https://www.linkedin.com/in/benjamin-brooke-097063159/" target="_blank">'
-                '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" width="20"></a>',
-                unsafe_allow_html=True
-            )
-        st.radio("View Mode", ["Standard", "Compact"])
+                <a href="https://www.linkedin.com/in/benjamin-brooke-097063159/" target="_blank">
+                    <i class="fa-brands fa-linkedin" style="font-size:40px;"></i>
+                </a>
+                
+                </div>
+                """, unsafe_allow_html=True)
+
 
     st.header("Welcome to the SkyBlueLab")
     st.write("Senior Data Scientist with 5+ years of experience building ETL pipelines and 2+ years building ML systems for clinical research. Specialised in clinical NLP, distributed data pipelines (PySpark, Databricks), and deep learning with PyTorch. Deployed production ML systems that improved clinical data processing efficiency and decision support. Experienced in building end-to-end ML pipelines, including feature engineering, model training, deployment, and monitoring.")
@@ -101,10 +111,10 @@ elif choice == "LAB":
     st.header("Active Missions")
     st.write("Tracking SkyBlue-1 Satellite.")
 
-elif choice == "RESEARCH":
+elif choice == "RESEARCH & CERTIFICATES":
     with st.sidebar:
         st.image("SkyBlueLab/Cropped.png", width=75)
         st.title("")
 
-    st.header("Research Papers")
+    st.header("Research Papers and Certificates")
 
