@@ -19,5 +19,6 @@ jobs:
 
       - name: Build and Push
         run: |
-          docker build -t rg.fr-par.scw.cloud/your-namespace/ocean:latest .
-          docker push rg.fr-par.scw.cloud/your-namespace/ocean:latest
+          # We are tagging your app as 'ocean' inside the 'skybluelab' registry
+          docker build -t rg.fr-par.scw.cloud/skybluelab/ocean:latest .
+          docker push rg.fr-par.scw.cloud/skybluelab/ocean:latest
