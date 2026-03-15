@@ -1,0 +1,8 @@
+streamlit
+streamlit-option-menu
+folium
+streamlit-folium
+Pillow
+torch
+numpy
+streamlit-lottie
