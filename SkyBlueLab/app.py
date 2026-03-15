@@ -2,11 +2,13 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import os
 from streamlit_lottie import st_lottie
+import base64
 
-# --- PAGE CONFIG ---
+
+
 st.set_page_config(page_title="SkyBlueLab | Benjamin Brooke", page_icon="🌐", layout="wide",initial_sidebar_state="expanded")
 
-# --- CUSTOM CSS ---
+
 st.markdown("""
     <style>
     /* Remove whitespace at top */
@@ -60,23 +62,17 @@ choice = option_menu(
 with st.sidebar:
 
     try:
-        import base64
-        import os
 
-
-        # 1. Function to convert local image to base64
         def get_base64_image(image_path):
             with open(image_path, "rb") as img_file:
                 return base64.b64encode(img_file.read()).decode()
 
 
-        # 2. Set your image path (make sure this matches your file name exactly!)
         img_path = "Assets/Gemini_Generated_Image_xvmap5xvmap5xvma.png"
 
         if os.path.exists(img_path):
             img_base64 = get_base64_image(img_path)
 
-            # 3. CSS for the circle
             st.markdown(f"""
                 <style>
                 .circular-image {{
@@ -106,7 +102,7 @@ with st.sidebar:
         st.write("SPAIN +34 641 565 991")
         st.write("UK +44 7306 382 896")
 
-# --- PAGE CONTENT ---
+
 if choice == "HOME":
     with st.sidebar:
         sc1, sc2 = st.columns(2)
@@ -128,7 +124,7 @@ if choice == "HOME":
                 </a>
             """, unsafe_allow_html=True)
 
-    # Main Home Content
+
     col_main, col_spacer = st.columns([2, 1])
     with col_main:
         st.info("**Please navigate through the tabs for more information**")
@@ -229,7 +225,7 @@ elif choice == "OCEAN":
 
     if st.session_state.science_auth:
         st.write("---")
-        # run_ocean() would go here
+
         st.success("Ready for queries. OceanBlue is online.")
     else:
         st.info("Please authenticate using the sidebar to access the LLM.")
@@ -243,7 +239,7 @@ elif choice == "PROJECTS":
         col1, col2 = st.columns([1, 2])
 
         with col1:
-            # A clean diagram or UI screenshot
+
             st.metric("Pytorch", "400 Hours", "Machine Learning")
 
         with col2:
@@ -306,7 +302,7 @@ elif choice == "PROJECTS":
             st.session_state.show_deep_dive_1 = not st.session_state.show_deep_dive_1
 
         with col1:
-             # A clean diagram or UI screenshot
+
             st.metric("Databricks & Azure", "150 Hours", "Medallion Architecture")
             st.metric("Scale", "10k+", "Records")
 
@@ -462,7 +458,7 @@ elif choice == "RESEARCH & CERTIFICATES":
                         data=f,
                         file_name="Coursera SAS Programmer",
                         mime="application/pdf",
-                        use_container_width=True  # Makes the button fill the box
+                        use_container_width=True
                     )
             except FileNotFoundError:
                 st.error("PDF file not found in directory.")
@@ -480,7 +476,7 @@ elif choice == "RESEARCH & CERTIFICATES":
                         data=f,
                         file_name="IBM AI Engineering.pdf",
                         mime="application/pdf",
-                        use_container_width=True  # Makes the button fill the box
+                        use_container_width=True
                     )
             except FileNotFoundError:
                 st.error("PDF file not found in directory.")
