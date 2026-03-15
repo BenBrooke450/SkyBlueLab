@@ -99,7 +99,7 @@ with st.sidebar:
 
     st.markdown("### Benjamin Brooke")
     st.caption("**Senior Data Scientist & AI Engineer**")
-    st.caption("*Madrid, Spain*")
+    st.caption("*Madrid, Spain* & *London, UK*")
     st.write("Ben.brooke97@icloud.com")
     with st.container(border=True):
         st.write("SPAIN +34 641 565 991")
@@ -144,6 +144,41 @@ if choice == "HOME":
         
         ---""")
 
+        st.markdown("""
+             <style>
+             .tech-pill {
+                 display: inline-block;
+                 padding: 4px 12px;
+                 margin: 5px 4px;
+                 border-radius: 15px;
+                 background-color: #E1F5FE; /* Light Blue Background */
+                 color: #01579B;            /* Dark Blue Text */
+                 font-weight: 600;
+                 font-size: 0.85rem;
+                 border: 1px solid #81D4FA; /* Soft Blue Border */
+                 transition: 0.3s;
+                 cursor: default;
+             }
+             .tech-pill:hover {
+                 background-color: #B3E5FC; /* Slightly darker on hover */
+                 border-color: #0288D1;
+             }
+             </style>
+         """, unsafe_allow_html=True)
+
+        stack = {
+            "Languages": ["Python", "SQL", "PySpark", "PyTorch", "SAS", "Scikit-Learn"],
+            "AI/ML": ["Transformers", "Vision Transformers", "Vector Databases", "LoRA", "RAG", "LangGraph",
+                      "HuggingFace"],
+            "Engineering": ["Databricks", "Azure", "ETL"]
+        }
+
+        for cat, tools in stack.items():
+            st.write(f"**{cat}:**")
+            st.markdown(" ".join([f'<span class="tech-pill">{t}</span>' for t in tools]), unsafe_allow_html=True)
+
+        st.divider()
+
         st.info("""
         * **Clinical AI Expert:** Clinical NLP & LLMOps Architect: Fine-tuned **Encoder-based Transformers** (Clinical-BERT) for high-precision **NER** and Information Extraction, utilising **Parameter-Efficient Fine-Tuning (PEFT)** on **Decoder** models (Llama-3) to automate clinical summarization and **RAG-driven** decision support.
         
@@ -153,52 +188,10 @@ if choice == "HOME":
         """)
 
 
-        st.markdown("""
-        #### **Technical Stack**
-        | Category | Tools & Technologies |
-        | :--- | :--- |
-        | **Programming** | Python, PySpark, SQL, Scikit-Learn, PyTorch  |
-        | **AI/ML** | NLP, LLMs, RAG, CNNs, Transformers, LangChain, LangGraph  |
-        | **Data Engineering** | Spark, Medallion Architecture, ETL Pipelines  |
-        | **Platforms** | Databricks, Spotfire, HuggingFace, Ollama  |
-        """)
-
 
         with col_spacer:
-            st.markdown("""
-                <style>
-                .tech-pill {
-                    display: inline-block;
-                    padding: 4px 12px;
-                    margin: 5px 4px;
-                    border-radius: 15px;
-                    background-color: #E1F5FE; /* Light Blue Background */
-                    color: #01579B;            /* Dark Blue Text */
-                    font-weight: 600;
-                    font-size: 0.85rem;
-                    border: 1px solid #81D4FA; /* Soft Blue Border */
-                    transition: 0.3s;
-                    cursor: default;
-                }
-                .tech-pill:hover {
-                    background-color: #B3E5FC; /* Slightly darker on hover */
-                    border-color: #0288D1;
-                }
-                </style>
-            """, unsafe_allow_html=True)
-
-            stack = {
-                "Languages": ["Python", "SQL", "PySpark"],
-                "AI/ML": ["Transformers", "PyTorch", "PEFT", "LoRA", "RAG", "LangGraph"],
-                "Engineering": ["Databricks", "Azure", "ETL"]
-            }
-
-            for cat, tools in stack.items():
-                st.write(f"**{cat}:**")
-                st.markdown(" ".join([f'<span class="tech-pill">{t}</span>' for t in tools]), unsafe_allow_html=True)
 
             st.markdown("### Key Impact")
-            st.metric("AI Agent Efficiency Gain", "30%", "Higher Productivity")
             st.metric("Data Volume", "100k Records/Day", "Clinical ETL")
             st.metric("Spark Efficiency Gain with ETL", "50% Reduction", "Processing Time")
             st.metric("Experience", "5+ Years", "Senior Level")
@@ -364,7 +357,7 @@ elif choice == "PROJECTS":
 
 
     with st.container(border=True):
-        st.subheader("Evolution of Image Detection for Deep Neural Networks")
+        st.subheader("Building Deep Neural Networks")
         col1, col2 = st.columns([1, 2])
 
         if 'show_Image_1' not in st.session_state:
@@ -375,12 +368,11 @@ elif choice == "PROJECTS":
 
         with col1:
              # A clean diagram or UI screenshot
-            st.metric("Databricks & Azure", "150 Hours", "Medallion Architecture")
-            st.metric("Scale", "10k+", "Records")
+            st.metric("Pytorch", "Over 100 Hours", "FFN - CNN - Transformers")
 
         with col2:
-            st.subheader("Analysing Accuracy and Efficiency in the Training of Evolution of Image Classification")
-            st.write("Eevolution of image classification models, focusing on major architectural milestones from early convolutional neural networks to modern transformer-based approaches")
+            st.subheader("Deep Learning Artificial intelligence Sandbox")
+            st.write("This Github is where I have developed many different types of AI systems, from encoder transformers for sentiment analysis to simple FFNs")
             st.markdown("""
                 <style>
                 .tech-badge {
@@ -398,12 +390,12 @@ elif choice == "PROJECTS":
                 """, unsafe_allow_html=True)
 
             st.markdown("""
-                <span class="tech-badge">Databricks</span>
-                <span class="tech-badge">PySpark</span>
-                <span class="tech-badge">Azure</span>
-                <span class="tech-badge">SQL</span>
-                <span class="tech-badge">Spark</span>
-                <span class="tech-badge">Pandas</span>
+                <span class="tech-badge">Pytorch</span>
+                <span class="tech-badge">FFNs</span>
+                <span class="tech-badge">CNNs</span>
+                <span class="tech-badge">Transformers</span>
+                <span class="tech-badge">RAG</span>
+                <span class="tech-badge">Langchain</span>
                 """, unsafe_allow_html=True)
 
             button_label = "Close Deep Dive" if st.session_state.show_Image_1 else "View Deep Dive"
@@ -438,7 +430,7 @@ elif choice == "RESEARCH & CERTIFICATES":
             try:
                 with open("SkyBlueLab/Assets/ResearchPaper.pdf", "rb") as f:
                     st.download_button(
-                        label="Download Full PDF",
+                        label="Download: Image Classification Research Paper ",
                         data=f,
                         file_name="ResearchPaper_AI_Engineer.pdf",
                         mime="application/pdf",
@@ -465,7 +457,7 @@ elif choice == "RESEARCH & CERTIFICATES":
             try:
                 with open("SkyBlueLab/Assets/Coursera SAS Programmer.pdf", "rb") as f:
                     st.download_button(
-                        label="Download F",
+                        label="Download Certificate: SAS for Clinical Data",
                         data=f,
                         file_name="Coursera SAS Programmer",
                         mime="application/pdf",
@@ -483,7 +475,7 @@ elif choice == "RESEARCH & CERTIFICATES":
             try:
                 with open("SkyBlueLab/Assets/IBM AI Engineering.pdf", "rb") as f:
                     st.download_button(
-                        label="Download PDF",
+                        label="Download: IBM AI Engineering",
                         data=f,
                         file_name="IBM AI Engineering.pdf",
                         mime="application/pdf",
