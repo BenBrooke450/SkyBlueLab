@@ -3,6 +3,7 @@ from streamlit_option_menu import option_menu
 import os
 from streamlit_lottie import st_lottie
 import base64
+from openai import OpenAI
 
 
 
@@ -103,7 +104,9 @@ with st.sidebar:
         st.write("UK +44 7306 382 896")
 
 
+
 if choice == "HOME":
+
     with st.sidebar:
         sc1, sc2 = st.columns(2)
         with sc1:
@@ -123,7 +126,6 @@ if choice == "HOME":
                     </div>
                 </a>
             """, unsafe_allow_html=True)
-
 
     col_main, col_spacer = st.columns([2, 1])
     with col_main:
@@ -204,6 +206,7 @@ elif choice == "OCEAN":
     st.subheader("Personal LLM & Research Assistant")
     st.markdown(""" **Fine tuned using LoRA (Low-Rank Adaptation) on Llama-3 with medical Q&A datasets.**""")
 
+
     with st.sidebar:
         if "science_auth" not in st.session_state:
             st.session_state.science_auth = False
@@ -227,10 +230,89 @@ elif choice == "OCEAN":
         st.write("---")
 
         st.success("Ready for queries. OceanBlue is online.")
+
+        client = OpenAI()
+
+        SYSTEM_PROMPT = """
+        You are SkyBlueLab AI.
+
+        You help users understand AI, machine learning, and clinical NLP.
+        Be clear, concise, and helpful.
+        """
+
+
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
+
+
+        for msg in st.session_state.messages:
+            if msg["role"] == "user":
+                st.write("You:", msg["content"])
+            else:
+                st.write("OceanBlue:", msg["content"])
+
+
+        user_input = st.text_input("Ask a question")
+
+        if st.button("Send") and user_input:
+            st.session_state.messages.append(
+                {"role": "user", "content": user_input}
+            )
+
+            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            messages += st.session_state.messages
+
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages
+            )
+
+            reply = response.choices[0].message.content
+
+            st.session_state.messages.append(
+                {"role": "assistant", "content": reply}
+            )
+
+            st.write("OceanBlue:", reply)
+
+
+
     else:
         st.info("Please authenticate using the sidebar to access the LLM.")
 
+
+
+
+
+
+
+
+
+
+
+
 elif choice == "PROJECTS":
+
+    with st.sidebar:
+        sc1, sc2 = st.columns(2)
+        with sc1:
+            st.markdown("""
+                <a href="https://github.com/BenBrooke450" target="_blank" style="text-decoration:none; color:inherit;">
+                    <div class="social-card">
+                        <i class="fa-brands fa-github" style="font-size:24px;"></i><br><small>GitHub</small>
+                    </div>
+                </a>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+            """, unsafe_allow_html=True)
+        with sc2:
+            st.markdown("""
+                <a href="https://www.linkedin.com/in/benjamin-brooke-097063159/" target="_blank" style="text-decoration:none; color:inherit;">
+                    <div class="social-card">
+                        <i class="fa-brands fa-linkedin" style="font-size:24px; color:#0077b5;"></i><br><small>LinkedIn</small>
+                    </div>
+                </a>
+            """, unsafe_allow_html=True)
+
     st.title("Project Portfolio")
     st.info("Detailed Projects of my work in Artificial Intelligence and Data Engineering.")
 
@@ -413,6 +495,26 @@ elif choice == "PROJECTS":
 
 
 elif choice == "RESEARCH & CERTIFICATES":
+    with st.sidebar:
+        sc1, sc2 = st.columns(2)
+        with sc1:
+            st.markdown("""
+                <a href="https://github.com/BenBrooke450" target="_blank" style="text-decoration:none; color:inherit;">
+                    <div class="social-card">
+                        <i class="fa-brands fa-github" style="font-size:24px;"></i><br><small>GitHub</small>
+                    </div>
+                </a>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+            """, unsafe_allow_html=True)
+        with sc2:
+            st.markdown("""
+                <a href="https://www.linkedin.com/in/benjamin-brooke-097063159/" target="_blank" style="text-decoration:none; color:inherit;">
+                    <div class="social-card">
+                        <i class="fa-brands fa-linkedin" style="font-size:24px; color:#0077b5;"></i><br><small>LinkedIn</small>
+                    </div>
+                </a>
+            """, unsafe_allow_html=True)
+
     st.title("Research & Credentials")
     st.write("Published papers and professional certifications.")
 
@@ -421,7 +523,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("Image Classification Research Paper: LeNet-5 to Vision Transformers")
             st.caption("Medallion Architecture in Clinical Data Pipelines")
-            st.image("Assets/Screenshot_15-3-2026_121838_.jpeg", use_column_width= True)
+            st.image("Assets/Screenshot_15-3-2026_121838_.jpeg", width= True)
             st.write("This paper explores the Accuracy and Efficiency in the Evolution of Image Classification in Deep Neural Networks")
 
             try:
@@ -449,7 +551,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("SAS for Clinical Data")
             st.caption("Data Management of Drug Trials")
-            st.image("Assets/SAS.png", use_column_width= True)
+            st.image("Assets/SAS.png", width= True)
 
             try:
                 with open("Assets/Coursera SAS Programmer.pdf", "rb") as f:
@@ -467,7 +569,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("IBM AI Engineering")
             st.caption("Machine Learning & Artificial Intelligence")
-            st.image("Assets/IBM.png", use_column_width= True)
+            st.image("Assets/IBM.png", width= True)
 
             try:
                 with open("Assets/IBM AI Engineering.pdf", "rb") as f:
