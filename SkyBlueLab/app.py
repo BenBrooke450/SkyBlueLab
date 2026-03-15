@@ -523,7 +523,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("Image Classification Research Paper: LeNet-5 to Vision Transformers")
             st.caption("Medallion Architecture in Clinical Data Pipelines")
-            st.image("Assets/Screenshot_15-3-2026_121838_.jpeg", width= True)
+            st.image("Assets/Screenshot_15-3-2026_121838_.jpeg")
             st.write("This paper explores the Accuracy and Efficiency in the Evolution of Image Classification in Deep Neural Networks")
 
             try:
@@ -542,7 +542,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("Multi-Agent Systems Research Paper")
             st.caption("Automation of Workplace Tasks to Increase Efficiency")
-            st.image("Assets/Walsh-College-social-thumbnail.png", width= 300)
+            st.image("Assets/Walsh-College-social-thumbnail.png")
             st.markdown("""**[Publish in May]**""")
             st.write("This paper explores the AI frameworks composed of multiple interacting, autonomous agents that collaborate or compete to solve complex, large-scale tasks to improve productivity.")
 
@@ -551,7 +551,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("SAS for Clinical Data")
             st.caption("Data Management of Drug Trials")
-            st.image("Assets/SAS.png", width= True)
+            st.image("Assets/SAS.png")
 
             try:
                 with open("Assets/Coursera SAS Programmer.pdf", "rb") as f:
@@ -569,7 +569,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("IBM AI Engineering")
             st.caption("Machine Learning & Artificial Intelligence")
-            st.image("Assets/IBM.png", width= True)
+            st.image("Assets/IBM.png")
 
             try:
                 with open("Assets/IBM AI Engineering.pdf", "rb") as f:
