@@ -101,13 +101,13 @@ with st.sidebar:
     st.caption("**Senior Data Scientist & AI Engineer**")
     st.caption("*Madrid, Spain*")
     st.write("Ben.brooke97@icloud.com")
-    st.write("SPAIN +34 641 565 991")
-    st.write("UK +44 7306 382 896")
+    with st.container(border=True):
+        st.write("SPAIN +34 641 565 991")
+        st.write("UK +44 7306 382 896")
 
 # --- PAGE CONTENT ---
 if choice == "HOME":
     with st.sidebar:
-        st.write("**Contact & Socials**")
         sc1, sc2 = st.columns(2)
         with sc1:
             st.markdown("""
@@ -138,7 +138,7 @@ if choice == "HOME":
         
         #### **Education & Research**
         * **MSc in Artificial Intelligence** | *Walsh College* (June 2026) 
-            * Research focus on **AI Agents** and **Transformer Architecture**;
+            * Research focus on **AI Agents** and **Transformer Architecture**
             * **Research publication view Research tab**
         * **BSc in Mathematics & Statistics** | *University of Strathclyde* 
         
@@ -152,13 +152,6 @@ if choice == "HOME":
         * **AI Agents:** In my academic work I designed multi-agent workflows using LangGraph to automate technical support operations, achieving a **20% reduction in manual triage**.
         """)
 
-        st.write("---")
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Data Volume", "100k Records/Day", "Clinical ETL")
-        col2.metric("Efficiency Gain", "50% Reduction", "Processing Time")
-        col3.metric("Experience", "5+ Years", "Senior Level")
-        col4.metric("AI Agents", "20% Reduction", "Manual Triage")
-        st.write("---")
 
         st.markdown("""
         #### **Technical Stack**
@@ -169,6 +162,47 @@ if choice == "HOME":
         | **Data Engineering** | Spark, Medallion Architecture, ETL Pipelines  |
         | **Platforms** | Databricks, Spotfire, HuggingFace, Ollama  |
         """)
+
+
+        with col_spacer:
+            st.markdown("""
+                <style>
+                .tech-pill {
+                    display: inline-block;
+                    padding: 4px 12px;
+                    margin: 5px 4px;
+                    border-radius: 15px;
+                    background-color: #E1F5FE; /* Light Blue Background */
+                    color: #01579B;            /* Dark Blue Text */
+                    font-weight: 600;
+                    font-size: 0.85rem;
+                    border: 1px solid #81D4FA; /* Soft Blue Border */
+                    transition: 0.3s;
+                    cursor: default;
+                }
+                .tech-pill:hover {
+                    background-color: #B3E5FC; /* Slightly darker on hover */
+                    border-color: #0288D1;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+
+            stack = {
+                "Languages": ["Python", "SQL", "PySpark"],
+                "AI/ML": ["Transformers", "PyTorch", "PEFT", "LoRA", "RAG", "LangGraph"],
+                "Engineering": ["Databricks", "Azure", "ETL"]
+            }
+
+            for cat, tools in stack.items():
+                st.write(f"**{cat}:**")
+                st.markdown(" ".join([f'<span class="tech-pill">{t}</span>' for t in tools]), unsafe_allow_html=True)
+
+            st.markdown("### Key Impact")
+            st.metric("AI Agent Efficiency Gain", "30%", "Higher Productivity")
+            st.metric("Data Volume", "100k Records/Day", "Clinical ETL")
+            st.metric("Spark Efficiency Gain with ETL", "50% Reduction", "Processing Time")
+            st.metric("Experience", "5+ Years", "Senior Level")
+            st.metric("AI Agents Triage", "20% Reduction", "Manual Triage")
 
 
 
