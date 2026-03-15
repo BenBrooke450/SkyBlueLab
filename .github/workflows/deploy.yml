@@ -13,7 +13,7 @@ jobs:
       - name: Login to Scaleway
         uses: docker/login-action@v3
         with:
-          registry: rg.fr-par.scw.cloud
+          registry: rg.nl-ams.scw.cloud
           username: nologin
           password: ${{ secrets.SCW_SECRET_KEY }}
 
