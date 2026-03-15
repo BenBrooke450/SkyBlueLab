@@ -6,3 +6,4 @@ Pillow
 torch
 numpy
 streamlit-lottie
+os
