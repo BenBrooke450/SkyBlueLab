@@ -490,10 +490,6 @@ elif choice == "PROJECTS":
 
 
 
-
-
-
-
 elif choice == "RESEARCH & CERTIFICATES":
     with st.sidebar:
         sc1, sc2 = st.columns(2)
