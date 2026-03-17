@@ -97,7 +97,8 @@ with st.sidebar:
 
     st.markdown("### Benjamin Brooke")
     st.caption("**Senior Data Scientist & AI Engineer**")
-    st.caption("*Madrid, Spain* & *London, UK*")
+    st.caption("*Madrid, Spain*")
+    st.caption("*London, UK*")
     st.write("Ben.brooke97@icloud.com")
     with st.container(border=True):
         st.write("SPAIN +34 641 565 991")
