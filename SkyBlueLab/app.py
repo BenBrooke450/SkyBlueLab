@@ -587,7 +587,25 @@ elif choice == "RESEARCH & CERTIFICATES":
 
 elif choice == "TEST":
 
-    st.text_input()
+    if "test" not in st.session_state:
+        st.session_state.test = False
+
+    if not st.session_state.test:
+        st.warning("Access Restricted")
+        pin = st.text_input("Enter Access Code", type="password")
+        if st.button("Unlock System", use_container_width=True):
+            if pin == "2026":
+                st.session_state.test = True
+                st.rerun()
+            else:
+                st.error("Invalid Code")
+    else:
+        st.success("Authenticated")
+        if st.button("Secure Log Out", use_container_width=True):
+            st.session_state.test = False
+            st.rerun()
+
+    if st.session_state.test:
 
 
 
