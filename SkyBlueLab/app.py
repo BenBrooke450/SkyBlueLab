@@ -45,8 +45,8 @@ st.markdown("""
 
 choice = option_menu(
     menu_title= "",
-    options=["HOME", "RESEARCH & CERTIFICATES","PROJECTS", "OCEAN"],
-    icons=["flower1", "file-earmark-person","bi bi-floppy-fill", "tsunami"],
+    options=["HOME", "RESEARCH & CERTIFICATES","PROJECTS", "OCEAN", "TEST"],
+    icons=["flower1", "file-earmark-person","bi bi-floppy-fill", "tsunami", "calculator"],
     menu_icon="cast",
     default_index=0,
     orientation="horizontal",
@@ -579,3 +579,17 @@ elif choice == "RESEARCH & CERTIFICATES":
                     )
             except FileNotFoundError:
                 st.error("PDF file not found in directory.")
+
+
+
+
+
+
+elif choice == "TEST":
+
+    st.text_input()
+
+
+
+
+
