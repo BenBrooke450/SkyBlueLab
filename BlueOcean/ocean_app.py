@@ -1,15 +1,20 @@
 
+
+
 from transformers import AutoTokenizer, AutoModelForMaskedLM
 
-model_id = "answerdotai/ModernBERT-base"
+# Load from local paths
+tokenizer = AutoTokenizer.from_pretrained("./ModernBERT-tokenizer")
+model = AutoModelForMaskedLM.from_pretrained("./ModernBERT-model")
+
+# Test it
+inputs = tokenizer("The patient was given [MASK].", return_tensors="pt")
+outputs = model(**inputs)
+
+print(outputs.logits.shape)
 
 
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-tokenizer.save_pretrained("./ModernBERT-tokenizer")  # save locally
-
-
-model = AutoModelForMaskedLM.from_pretrained(model_id)
-model.save_pretrained("./ModernBERT-model")  # save weights and config locally
 
 def run_ocean():
+    pass
 
