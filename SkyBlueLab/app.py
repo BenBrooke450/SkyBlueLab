@@ -581,10 +581,6 @@ elif choice == "RESEARCH & CERTIFICATES":
                 st.error("PDF file not found in directory.")
 
 
-
-
-
-
 elif choice == "TEST":
 
     if "test" not in st.session_state:
@@ -607,8 +603,3 @@ elif choice == "TEST":
 
     if st.session_state.test:
         pass
-
-
-
-
-
