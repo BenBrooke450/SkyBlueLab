@@ -32,6 +32,7 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             # 1. Login to the registry on the VPS
             echo "${{ secrets.SCW_SECRET_KEY }}" | sudo docker login rg.nl-ams.scw.cloud -u nologin --password-stdin
