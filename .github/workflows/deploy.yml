@@ -19,7 +19,7 @@ jobs:
 
       - name: Build and Push
         run: |
-          docker build -t rg.nl-ams.scw.cloud/skybluelab/ocean:latest -f SkyBlueLab/Dockerfile SkyBlueLab/
+          docker build -t rg.nl-ams.scw.cloud/skybluelab/ocean:latest .
           docker push rg.nl-ams.scw.cloud/skybluelab/ocean:latest
 
   deploy-to-vps:
