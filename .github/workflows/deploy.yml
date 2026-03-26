@@ -47,6 +47,6 @@ jobs:
             # 4. Run the new version with your weights attached
             sudo docker run -d \
               --name skyblue-app \
-              -p 80:80 \
+              -p 80:8080 \
               -v /model_weights_tokeniser:/data \
               rg.nl-ams.scw.cloud/skybluelab/ocean:latest
