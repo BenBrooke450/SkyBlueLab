@@ -42,7 +42,8 @@ jobs:
             
             # 3. Stop and swap the container
             sudo docker stop skyblue-app || true
-            sudo docker rm skyblue-app || true
+            sudo docker rm -f skyblue-app || true
+            sudo docker rm -f skyblue-api || true
             
             # 4. Run the new version with your weights attached
             sudo docker run -d \
