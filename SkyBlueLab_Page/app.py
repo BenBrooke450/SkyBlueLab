@@ -520,7 +520,7 @@ elif choice == "RESEARCH & CERTIFICATES":
         with st.container(border=True):
             st.markdown("Image Classification Research Paper: LeNet-5 to Vision Transformers")
             st.caption("Deep dive into CNN and Vision Transformer Architecture")
-            st.image("Assets/Screenshot_15-3-2026_121838_")
+            st.image("Assets/Screenshot_15-3-2026_121838_.png")
             st.write("This paper explores the Accuracy and Efficiency in the Evolution of Image Classification in Deep Neural Networks")
 
             try:
