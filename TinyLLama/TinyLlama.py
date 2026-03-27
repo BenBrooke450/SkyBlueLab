@@ -34,4 +34,4 @@ if __name__ == "__main__":
 
     first_model = LLM_Tiny_Llama()
 
-    print(first_model.prompt("Hello, is this the Tiny LLama model?, who designed you ?"))
+    print(first_model.prompt("I want to test this works, please confirm"))
