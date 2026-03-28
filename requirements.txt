@@ -6,3 +6,5 @@ Pillow
 numpy
 streamlit-lottie
 openai
+promote
+transformers
