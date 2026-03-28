@@ -2,9 +2,6 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# 1. Install Torch
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-
 # 2. Install requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

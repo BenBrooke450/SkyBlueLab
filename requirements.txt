@@ -6,5 +6,6 @@ Pillow
 numpy
 streamlit-lottie
 openai
-promote
+datashader
 transformers
+torch
