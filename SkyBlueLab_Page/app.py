@@ -166,20 +166,15 @@ if choice == "HOME":
              </style>
          """, unsafe_allow_html=True)
 
-        stack = {
-            "Languages": ["Python", "SQL", "PySpark", "PyTorch", "SAS", "Scikit-Learn"],
-            "AI/ML": ["Transformers", "Vision Transformers", "Vector Databases", "LoRA", "RAG", "LangGraph",
-                      "HuggingFace"],
-            "Engineering": ["Databricks", "Azure", "ETL"]
-        }
-
         for cat, tools in stack.items():
             st.write(f"**{cat}:**")
             st.markdown(" ".join([f'<span class="tech-pill">{t}</span>' for t in tools]), unsafe_allow_html=True)
 
         st.divider()
 
-        st.info("""
+        st.markdown("### Artificial Intelligence & Machine Learning")
+
+        st.markdown("""
             **Clinical NLP & Machine Learning**
             - Developed transformer-based pipelines (ClinicalBERT) for entity recognition and information extraction in clinical datasets
             
@@ -189,6 +184,25 @@ if choice == "HOME":
             **Applied ML Systems**
             - Implemented MLflow pipelines for experiment tracking, reproducibility, and deployment
         """)
+
+        st.divider()
+
+        st.markdown("### Clinical & Regulatory Experience")
+
+        st.markdown("""
+        - Worked with clinical trial datasets in regulated environments  
+        - Experience supporting data pipelines aligned with CDISC standards (SDTM/ADaM)  
+        - Ensured data integrity, traceability, and reproducibility in clinical workflows  
+        """)
+
+        st.divider()
+
+        stack = {
+            "Languages": ["Python", "SQL", "PySpark", "PyTorch", "SAS", "Scikit-Learn"],
+            "AI/ML": ["Transformers", "Vision Transformers", "Vector Databases", "LoRA", "RAG", "LangGraph",
+                      "HuggingFace"],
+            "Engineering": ["Databricks", "Azure", "ETL"]
+        }
 
 
 
