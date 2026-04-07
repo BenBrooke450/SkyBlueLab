@@ -96,7 +96,7 @@ with st.sidebar:
         st.icon("person_circle", size="large")
 
     st.markdown("### Benjamin Brooke")
-    st.caption("**Senior Data Scientist & AI Engineer**")
+    st.caption("**Senior Clinical Data Scientist & AI Engineer**")
     st.caption("*Madrid, Spain*")
     st.caption("*London, UK*")
     st.write("Ben.brooke97@icloud.com")
@@ -134,7 +134,7 @@ if choice == "HOME":
         st.markdown("""
         
         #### **Professional Profile**
-        Senior Data Scientist with **5+ years of experience** building high-performance ETL and ML systems for **clinical research**.
+        Senior Clinical Data Scientist with **5+ years of experience** building high-performance ETL and ML systems for **clinical research**.
         
         #### **Education & Research**
         * **MSc in Artificial Intelligence** | *Walsh College* (June 2026) 
@@ -180,11 +180,14 @@ if choice == "HOME":
         st.divider()
 
         st.info("""
-        * **Clinical AI Expert:** Clinical NLP & LLMOps Architect: Fine-tuned **Encoder-based Transformers** (Clinical-BERT) for high-precision **NER** and Information Extraction, utilising **Parameter-Efficient Fine-Tuning (PEFT)** on **Decoder** models (Llama-3) to automate clinical summarization and **RAG-driven** decision support.
-        
-        * **Big Data Architect:** I assisted in engineering a distributed pipeline that processed over **100K** records daily and enforced schema validation and clinical entity resolution, reducing the latency between patient data entry and therapeutic insight by **50%**.
-        
-        * **AI Agents:** In my academic work I designed multi-agent workflows using LangGraph to automate technical support operations, achieving a **20% reduction in manual triage**.
+            **Clinical NLP & Machine Learning**
+            - Developed transformer-based pipelines (ClinicalBERT) for entity recognition and information extraction in clinical datasets
+            
+            **Data Engineering (Databricks)**
+            - Built distributed ETL pipelines processing 100k+ clinical records daily using PySpark and Delta Lake
+            
+            **Applied ML Systems**
+            - Implemented MLflow pipelines for experiment tracking, reproducibility, and deployment
         """)
 
 

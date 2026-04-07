@@ -1,12 +1,13 @@
-from datashader.datashape import promote
-
 
 class LLM_Tiny_Llama:
     def __init__(self):
         import torch
         from transformers import AutoTokenizer, AutoModelForCausalLM
+        from datashader.datashape import promote
 
         MODEL_PATH = "/data/models--TinyLlama--TinyLlama-1.1B-Chat-v1.0/snapshots/fe8a4ea1ffedaf415f4da2f062534de366a451e6"
+
+        MODEL_PATH = "/Users/benjaminbrooke/.cache/huggingface/hub/models--TinyLlama--TinyLlama-1.1B-Chat-v1.0/snapshots/fe8a4ea1ffedaf415f4da2f062534de366a451e6"
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
         self.model = AutoModelForCausalLM.from_pretrained( MODEL_PATH)
