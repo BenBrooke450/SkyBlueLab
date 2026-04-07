@@ -201,7 +201,7 @@ if choice == "HOME":
             "Languages": ["Python", "SQL", "PySpark", "PyTorch", "SAS", "Scikit-Learn"],
             "AI/ML": ["Transformers", "Vision Transformers", "Vector Databases", "LoRA", "RAG", "LangGraph",
                       "HuggingFace"],
-            "Engineering": ["Databricks", "Azure", "ETL"]
+            "Engineering": ["Databricks", "Azure", "ETL","Docker"]
         }
 
 
