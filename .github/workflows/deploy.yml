@@ -1,55 +1,45 @@
 name: Deploy to Scaleway
+
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Login to Scaleway
-        uses: docker/login-action@v3
-        with:
-          registry: rg.nl-ams.scw.cloud
-          username: nologin
-          password: ${{ secrets.SCW_SECRET_KEY }}
-
-      - name: Build and Push
-        run: |
-          docker build -t rg.nl-ams.scw.cloud/skybluelab/ocean:latest .
-          docker push rg.nl-ams.scw.cloud/skybluelab/ocean:latest
-
   deploy-to-vps:
-    needs: build-and-push # Wait for the build to finish first
     runs-on: ubuntu-latest
+
     steps:
       - name: SSH into VPS and Refresh
         uses: appleboy/ssh-action@master
+
         with:
           host: ${{ secrets.VPS_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
+
           script: |
-            # 1. Login to the registry on the VPS
+            set -e
+
+            IMAGE=rg.nl-ams.scw.cloud/skybluelab/ocean:${GITHUB_SHA}
+
+            # 1. Login to registry
             echo "${{ secrets.SCW_SECRET_KEY }}" | sudo docker login rg.nl-ams.scw.cloud -u nologin --password-stdin
-            
-            # 2. Pull the fresh image we just pushed
-            sudo docker pull rg.nl-ams.scw.cloud/skybluelab/ocean:latest
-            
-            # 3. Stop and swap the container
+
+            # 2. Pull the EXACT image for this commit
+            sudo docker pull $IMAGE
+
+            # 3. Stop + remove old containers cleanly
             sudo docker stop skyblue-app || true
             sudo docker rm -f skyblue-app || true
             sudo docker rm -f skyblue-api || true
-            
-            # 4. Run the new version with your weights attached
+
+            # 4. Run new container
             sudo docker run -d \
               --name skyblue-app \
               -p 80:8080 \
               -v /model_weights_tokeniser:/data \
-              rg.nl-ams.scw.cloud/skybluelab/ocean:latest
-            
-            sudo docker image prune -f
+              $IMAGE
+
+            # 5. Cleanup old images
+            sudo docker image prune -af
