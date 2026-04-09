@@ -199,8 +199,7 @@ if choice == "HOME":
 
         stack = {
             "Languages": ["Python", "SQL", "PySpark", "PyTorch", "SAS", "Scikit-Learn"],
-            "AI/ML": ["Transformers", "Vision Transformers", "Vector Databases", "LoRA", "RAG", "LangGraph",
-                      "HuggingFace"],
+            "AI/ML": ["Transformers", "Vision Transformers", "Vector Databases", "LoRA", "RAG", "LangGraph", "HuggingFace"],
             "Engineering": ["Databricks", "Azure", "ETL","Docker"]
         }
 
