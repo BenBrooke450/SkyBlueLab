@@ -166,10 +166,6 @@ if choice == "HOME":
              </style>
          """, unsafe_allow_html=True)
 
-        for cat, tools in stack.items():
-            st.write(f"**{cat}:**")
-            st.markdown(" ".join([f'<span class="tech-pill">{t}</span>' for t in tools]), unsafe_allow_html=True)
-
         st.divider()
 
         st.markdown("### Artificial Intelligence & Machine Learning")
@@ -202,6 +198,11 @@ if choice == "HOME":
             "AI/ML": ["Transformers", "Vision Transformers", "Vector Databases", "LoRA", "RAG", "LangGraph", "HuggingFace"],
             "Engineering": ["Databricks", "Azure", "ETL","Docker"]
         }
+
+        for cat, tools in stack.items():
+            st.write(f"**{cat}:**")
+            st.markdown(" ".join([f'<span class="tech-pill">{t}</span>' for t in tools]), unsafe_allow_html=True)
+
 
 
 
