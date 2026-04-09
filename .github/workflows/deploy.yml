@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH into VPS and Refresh
+      - name: SSH into VPS and Deploy
         uses: appleboy/ssh-action@master
 
         with:
@@ -17,24 +17,28 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          envs: GITHUB_SHA
+
           script: |
             set -e
-            
-            IMAGE=rg.nl-ams.scw.cloud/skybluelab/ocean:$GITHUB_SHA
-            
+
+            IMAGE=rg.nl-ams.scw.cloud/skybluelab/ocean:latest
+
+            # 1. Login to registry
             echo "${{ secrets.SCW_SECRET_KEY }}" | sudo docker login rg.nl-ams.scw.cloud -u nologin --password-stdin
-            
+
+            # 2. Pull latest image
             sudo docker pull $IMAGE
-            
+
+            # 3. Stop + remove old container (if it exists)
             sudo docker stop skyblue-app || true
-            sudo docker rm -f skyblue-app || true
-            sudo docker rm -f skyblue-api || true
-            
+            sudo docker rm skyblue-app || true
+
+            # 4. Run new container
             sudo docker run -d \
               --name skyblue-app \
               -p 80:8080 \
               -v /model_weights_tokeniser:/data \
               $IMAGE
-            
+
+            # 5. Cleanup unused images
             sudo docker image prune -af
