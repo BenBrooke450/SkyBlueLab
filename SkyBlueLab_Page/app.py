@@ -601,32 +601,6 @@ elif choice == "RESEARCH & CERTIFICATES":
 
 elif choice == "TEST":
 
-    with st.sidebar:
-
-        img_path = "SkyBlueLab_Page/Assets/SkyBlueLab.png"
-
-        if os.path.exists(img_path):
-            img_base64 = get_base64_image(img_path)
-
-            st.markdown(f"""
-                    <style>
-                    .circular-image {{
-                        width: 200px;
-                        height: 200px;
-                        border-radius: 50%;
-                        overflow: hidden;
-                        display: block;
-                        margin: 20px auto;
-                        border: 3px solid #f0f2f6;
-                        object-fit: cover;
-                        box-shadow: 0px 4px 10px rgba(0,0,0,0.1); /* Optional shadow */
-                    }}
-                    </style>
-                    <img src="data:image/png;base64,{img_base64}" class="circular-image">
-                    """, unsafe_allow_html=True)
-        else:
-            st.error(f"Could not find the image at: {img_path}")
-
     import streamlit as st
     import requests
     import pandas as pd
@@ -654,8 +628,6 @@ elif choice == "TEST":
 
         if not st.session_state.year_pick:
 
-            year = st.text_input("To begin analysis please pick a year of dairy price (EU)")
-
             EU_COUNTRIES = [
                 "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL",
                 "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
@@ -668,48 +640,66 @@ elif choice == "TEST":
 
             st.header("Filters")
 
-            selected_years = st.multiselect("Select years", YEARS, default=[2024])
-            selected_countries = st.multiselect("Select countries", EU_COUNTRIES, default=["FR"])
-            selected_months = st.multiselect("Select months", MONTHS, default=[1, 2, 3])
+            with st.expander("Filters", expanded=True):
+                selected_years = st.multiselect("Select years", YEARS, default=[2024])
+                selected_countries = st.multiselect("Select countries", EU_COUNTRIES, default=["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL","HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK","SI", "ES", "SE"])
+                selected_months = st.multiselect("Select months", MONTHS, default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
 
 
-            def build_url(years, countries, months):
-                base = "https://www.ec.europa.eu/agrifood/api/rawMilk/prices?"
-
+            def build_url_milk(years, countries, months):
+                milk = "https://www.ec.europa.eu/agrifood/api/rawMilk/prices?"
                 params = []
-
                 if years:
                     params.append("years=" + ",".join(map(str, years)))
-
                 if countries:
                     params.append("memberStateCodes=" + ",".join(countries))
-
                 if months:
                     params.append("months=" + ",".join(map(str, months)))
+                return milk + "&".join(params)
 
-                return base + "&".join(params)
+            def build_url_cheddar(years, countries, months):
+                cheddar = f"https://ec.europa.eu/agrifood/api/dairy/prices?"
+                params = []
+                if years:
+                    params.append("years=" + ",".join(map(str, years)))
+                if countries:
+                    params.append("memberStateCodes=" + ",".join(countries))
+                if months:
+                    params.append("months=" + ",".join(map(str, months)))
+                return cheddar + "&".join(params) + "&products=CHEDDAR"
 
 
-            url = build_url(selected_years, selected_countries, selected_months)
-
-            st.code(url)
-
+            milk_url = build_url_milk(selected_years, selected_countries, selected_months)
+            cheddar_url = build_url_cheddar(selected_years, selected_countries, selected_months)
 
             if st.button("Fetch data"):
-
+                st.session_state.show_filters = False
                 try:
-                    response = requests.get(url, timeout=30)
-                    data = response.json()
+                    response_milk = requests.get(milk_url, timeout=30)
+                    response_cheddar = requests.get(cheddar_url, timeout=30)
+                    data_milk = response_milk.json()
+                    data_cheddar = response_cheddar.json()
+
 
                     # Try to normalize response
-                    if isinstance(data, list):
-                        df = pd.DataFrame(data)
-                    elif isinstance(data, dict) and "data" in data:
-                        df = pd.DataFrame(data["data"])
+                    if isinstance(data_milk, list):
+                        df = pd.DataFrame(data_milk)
+                    elif isinstance(data_milk, dict) and "data" in data_milk:
+                        df = pd.DataFrame(data_milk["data"])
                     else:
-                        df = pd.json_normalize(data)
+                        df = pd.json_normalize(data_milk)
 
-                    st.success("Data loaded successfully")
+                    st.success("Dairy Data Loaded Successfully")
+                    st.dataframe(df)
+
+                    if isinstance(data_cheddar, list):
+                        df = pd.DataFrame(data_cheddar)
+                    elif isinstance(data_cheddar, dict) and "data" in data_cheddar:
+                        df = pd.DataFrame(data_cheddar["data"])
+                    else:
+                        df = pd.json_normalize(data_cheddar)
+
+                    st.success("Cheddar Data Loaded Successfully")
                     st.dataframe(df)
 
                 except Exception as e:
