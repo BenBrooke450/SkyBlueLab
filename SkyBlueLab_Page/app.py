@@ -606,39 +606,41 @@ elif choice == "TEST":
         st.warning("Access Restricted")
         pin = st.text_input("Enter Access Code", type="password")
         if st.button("Unlock System", use_container_width=True):
-            if pin == "2026":
+            if pin == "1234":
                 st.session_state.test = True
                 st.rerun()
             else:
                 st.error("Invalid Code")
     else:
-        st.success("Authenticated")
         if st.button("Secure Log Out", use_container_width=True):
             st.session_state.test = False
             st.rerun()
 
     if st.session_state.test:
-
-        year = st.text_input("Enter Year of dairy Price in the EU")
-
         if "year_pick" not in st.session_state:
-            st.session_state.year_pick = True
+            st.session_state.year_pick = False
 
-        url = f"https://www.ec.europa.eu/agrifood/api/rawMilk/prices?years={year}"
+        if not st.session_state.year_pick:
 
-        if st.button("Enter", use_container_width=True):
+            year = st.text_input("To begin analysis please pick a year of dairy price (EU)")
 
-            try:
-                response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+            url = f"https://www.ec.europa.eu/agrifood/api/rawMilk/prices?years={year}"
 
-                if response.status_code == 200:
-                    data = response.json()
-                    print(f"Successfully retrieved {len(data)} price records for year: {year}!")
-                    if data:
-                        print(data[0])
-                else:
-                    print(f"Error: Server returned status {response.status_code}")
+            print(url)
 
-            except Exception as e:
-                print(f"Connection failed: {e}")
+            if st.button("Enter", use_container_width=True):
+
+                try:
+                    response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+
+                    if response.status_code == 200:
+                        data = response.json()
+                        print(f"Successfully retrieved {len(data)} price records for year: {year}!")
+                        if data:
+                            print(data[0])
+                    else:
+                        print(f"Error: Server returned status {response.status_code}")
+
+                except Exception as e:
+                    print(f"Connection failed: {e}")
 
