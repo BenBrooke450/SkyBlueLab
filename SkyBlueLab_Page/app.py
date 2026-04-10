@@ -597,6 +597,7 @@ elif choice == "RESEARCH & CERTIFICATES":
 
 
 elif choice == "TEST":
+    import requests
 
     if "test" not in st.session_state:
         st.session_state.test = False
@@ -617,4 +618,27 @@ elif choice == "TEST":
             st.rerun()
 
     if st.session_state.test:
-        pass
+
+        year = st.text_input("Enter Year of dairy Price in the EU")
+
+        if "year_pick" not in st.session_state:
+            st.session_state.year_pick = True
+
+        url = f"https://www.ec.europa.eu/agrifood/api/rawMilk/prices?years={year}"
+
+        if st.button("Enter", use_container_width=True):
+
+            try:
+                response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+
+                if response.status_code == 200:
+                    data = response.json()
+                    print(f"Successfully retrieved {len(data)} price records for year: {year}!")
+                    if data:
+                        print(data[0])
+                else:
+                    print(f"Error: Server returned status {response.status_code}")
+
+            except Exception as e:
+                print(f"Connection failed: {e}")
+
