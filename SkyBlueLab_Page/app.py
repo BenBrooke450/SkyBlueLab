@@ -166,8 +166,6 @@ if choice == "HOME":
              </style>
          """, unsafe_allow_html=True)
 
-        st.divider()
-
         st.markdown("### Artificial Intelligence & Machine Learning")
 
         st.markdown("""
