@@ -5,40 +5,55 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy-to-vps:
+  build-and-push:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Login to Scaleway Registry
+        run: echo "${{ secrets.SCW_SECRET_KEY }}" | docker login rg.nl-ams.scw.cloud -u nologin --password-stdin
+
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE=rg.nl-ams.scw.cloud/skybluelab/ocean:latest
+          docker build -t $IMAGE .
+          docker push $IMAGE
+
+  deploy-to-vps:
+    needs: build-and-push # Only deploy if the build succeeds
+    runs-on: ubuntu-latest
     steps:
       - name: SSH into VPS and Deploy
         uses: appleboy/ssh-action@master
-
         with:
           host: ${{ secrets.VPS_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-
           script: |
             set -e
-
             IMAGE=rg.nl-ams.scw.cloud/skybluelab/ocean:latest
 
-            # 1. Login to registry
+            # Login to registry
             echo "${{ secrets.SCW_SECRET_KEY }}" | sudo docker login rg.nl-ams.scw.cloud -u nologin --password-stdin
 
-            # 2. Pull latest image
+            # Pull latest image
             sudo docker pull $IMAGE
 
-            # 3. Stop + remove old container (if it exists)
+            # Stop + remove old container
             sudo docker stop skyblue-app || true
             sudo docker rm skyblue-app || true
 
-            # 4. Run new container
+            # Run new container
+            # Note: Ensure port 8080 is what your app (Streamlit/FastAPI) listens on!
             sudo docker run -d \
               --name skyblue-app \
               -p 80:8080 \
+              --restart unless-stopped \
               -v /model_weights_tokeniser:/data \
               $IMAGE
 
-            # 5. Cleanup unused images
+            # Cleanup unused images (Fixed syntax: removed trailing underscore)
             sudo docker image prune -af
+            sudo docker system prune -af --volumes
