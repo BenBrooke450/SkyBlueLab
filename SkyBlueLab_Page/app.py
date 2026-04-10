@@ -61,7 +61,6 @@ choice = option_menu(
 
 
 with st.sidebar:
-
     try:
 
         def get_base64_image(image_path):
@@ -70,6 +69,10 @@ with st.sidebar:
 
 
         img_path = "SkyBlueLab_Page/Assets/Gemini_Generated_Image_xvmap5xvmap5xvma.png"
+
+        if choice == "TEST":
+            img_path = "SkyBlueLab_Page/Assets/SkyBlueLab.png"
+
 
         if os.path.exists(img_path):
             img_base64 = get_base64_image(img_path)
@@ -597,6 +600,34 @@ elif choice == "RESEARCH & CERTIFICATES":
 
 
 elif choice == "TEST":
+
+    with st.sidebar:
+
+        img_path = "SkyBlueLab_Page/Assets/SkyBlueLab.png"
+
+        if os.path.exists(img_path):
+            img_base64 = get_base64_image(img_path)
+
+            st.markdown(f"""
+                    <style>
+                    .circular-image {{
+                        width: 200px;
+                        height: 200px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        display: block;
+                        margin: 20px auto;
+                        border: 3px solid #f0f2f6;
+                        object-fit: cover;
+                        box-shadow: 0px 4px 10px rgba(0,0,0,0.1); /* Optional shadow */
+                    }}
+                    </style>
+                    <img src="data:image/png;base64,{img_base64}" class="circular-image">
+                    """, unsafe_allow_html=True)
+        else:
+            st.error(f"Could not find the image at: {img_path}")
+
+
     import requests
 
     if "test" not in st.session_state:
@@ -626,21 +657,20 @@ elif choice == "TEST":
 
             url = f"https://www.ec.europa.eu/agrifood/api/rawMilk/prices?years={year}"
 
-            print(url)
+            st.write(url)
 
             if st.button("Enter", use_container_width=True):
-
                 try:
                     response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
 
                     if response.status_code == 200:
                         data = response.json()
-                        print(f"Successfully retrieved {len(data)} price records for year: {year}!")
+                        st.write(f"Successfully retrieved {len(data)} price records for year: {year}!")
                         if data:
-                            print(data[0])
+                            st.write(data[0])
                     else:
-                        print(f"Error: Server returned status {response.status_code}")
+                        st.write(f"Error: Server returned status {response.status_code}")
 
                 except Exception as e:
-                    print(f"Connection failed: {e}")
+                    st.write(f"Connection failed: {e}")
 
