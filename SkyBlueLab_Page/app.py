@@ -627,8 +627,9 @@ elif choice == "TEST":
         else:
             st.error(f"Could not find the image at: {img_path}")
 
-
+    import streamlit as st
     import requests
+    import pandas as pd
 
     if "test" not in st.session_state:
         st.session_state.test = False
@@ -655,22 +656,62 @@ elif choice == "TEST":
 
             year = st.text_input("To begin analysis please pick a year of dairy price (EU)")
 
-            url = f"https://www.ec.europa.eu/agrifood/api/rawMilk/prices?years={year}"
+            EU_COUNTRIES = [
+                "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL",
+                "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
+                "SI", "ES", "SE"
+            ]
 
-            st.write(url)
+            YEARS = list(range(2020, 2025))
+            MONTHS = list(range(1, 13))
 
-            if st.button("Enter", use_container_width=True):
+
+            st.header("Filters")
+
+            selected_years = st.multiselect("Select years", YEARS, default=[2024])
+            selected_countries = st.multiselect("Select countries", EU_COUNTRIES, default=["FR"])
+            selected_months = st.multiselect("Select months", MONTHS, default=[1, 2, 3])
+
+
+            def build_url(years, countries, months):
+                base = "https://www.ec.europa.eu/agrifood/api/rawMilk/prices?"
+
+                params = []
+
+                if years:
+                    params.append("years=" + ",".join(map(str, years)))
+
+                if countries:
+                    params.append("memberStateCodes=" + ",".join(countries))
+
+                if months:
+                    params.append("months=" + ",".join(map(str, months)))
+
+                return base + "&".join(params)
+
+
+            url = build_url(selected_years, selected_countries, selected_months)
+
+            st.code(url)
+
+
+            if st.button("Fetch data"):
+
                 try:
-                    response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+                    response = requests.get(url, timeout=30)
+                    data = response.json()
 
-                    if response.status_code == 200:
-                        data = response.json()
-                        st.write(f"Successfully retrieved {len(data)} price records for year: {year}!")
-                        if data:
-                            st.write(data[0])
+                    # Try to normalize response
+                    if isinstance(data, list):
+                        df = pd.DataFrame(data)
+                    elif isinstance(data, dict) and "data" in data:
+                        df = pd.DataFrame(data["data"])
                     else:
-                        st.write(f"Error: Server returned status {response.status_code}")
+                        df = pd.json_normalize(data)
+
+                    st.success("Data loaded successfully")
+                    st.dataframe(df)
 
                 except Exception as e:
-                    st.write(f"Connection failed: {e}")
+                    st.error(f"Error fetching data: {e}")
 

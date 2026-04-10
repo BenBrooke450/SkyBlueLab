@@ -14,3 +14,5 @@ streamlit-lottie
 openai
 datashader
 transformers
+pandas
+requests
