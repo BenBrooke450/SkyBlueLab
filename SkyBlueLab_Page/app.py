@@ -656,7 +656,7 @@ elif choice == "TEST":
                     params.append("memberStateCodes=" + ",".join(countries))
                 if months:
                     params.append("months=" + ",".join(map(str, months)))
-                return milk + "&".join(params)
+                return milk + "&".join(params) + "&PRODUCTS=Raw Milk"
 
 
 
