@@ -623,11 +623,13 @@ elif choice == "TEST":
             st.rerun()
 
     if st.session_state.test:
+
+        col1, col2 = st.columns([1, 1])
+
         if "year_pick" not in st.session_state:
             st.session_state.year_pick = False
 
         if not st.session_state.year_pick:
-
             EU_COUNTRIES = [
                 "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL",
                 "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
@@ -638,9 +640,9 @@ elif choice == "TEST":
             MONTHS = list(range(1, 13))
             WEEKS = list(range(1, 52))
 
+        st.header("Filters")
 
-            st.header("Filters")
-
+        with col1:
             with st.expander("Dairy Filters", expanded=True):
                 selected_years = st.multiselect("Select years", YEARS, default=[2024])
                 selected_countries = st.multiselect("Select countries", EU_COUNTRIES, default=["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL","HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK","SI", "ES", "SE"])
@@ -658,8 +660,7 @@ elif choice == "TEST":
                     params.append("months=" + ",".join(map(str, months)))
                 return milk + "&".join(params) + "&PRODUCTS=Raw Milk"
 
-
-
+        with col2:
             with st.expander("Cheddar Filters", expanded=True):
                 selected_years_C = st.multiselect("Select years", YEARS, default=[2024])
                 selected_countries_C = st.multiselect("Select countries - Only 'IE','DE','NL','PL' report cheddar", EU_COUNTRIES, default=['IE','DE','NL','PL'])
@@ -678,38 +679,38 @@ elif choice == "TEST":
 
                 return cheddar + "&".join(params) + "&products=CHEDDAR"
 
-            milk_url = build_url_milk(selected_years, selected_countries, selected_months)
-            cheddar_url = build_url_cheddar(selected_years, selected_countries, selected_months)
+        milk_url = build_url_milk(selected_years, selected_countries, selected_months)
+        cheddar_url = build_url_cheddar(selected_years, selected_countries, selected_months)
 
-            if st.button("Fetch data"):
-                try:
-                    response_milk = requests.get(milk_url, timeout=30)
-                    response_cheddar = requests.get(cheddar_url, timeout=30)
-                    data_milk = response_milk.json()
-                    data_cheddar = response_cheddar.json()
+        if st.button("Fetch data"):
+            try:
+                response_milk = requests.get(milk_url, timeout=30)
+                response_cheddar = requests.get(cheddar_url, timeout=30)
+                data_milk = response_milk.json()
+                data_cheddar = response_cheddar.json()
 
 
-                    # Try to normalize response
-                    if isinstance(data_milk, list):
-                        df = pd.DataFrame(data_milk)
-                    elif isinstance(data_milk, dict) and "data" in data_milk:
-                        df = pd.DataFrame(data_milk["data"])
-                    else:
-                        df = pd.json_normalize(data_milk)
+                # Try to normalize response
+                if isinstance(data_milk, list):
+                    df = pd.DataFrame(data_milk)
+                elif isinstance(data_milk, dict) and "data" in data_milk:
+                    df = pd.DataFrame(data_milk["data"])
+                else:
+                    df = pd.json_normalize(data_milk)
 
-                    st.success("Dairy Data Loaded Successfully")
-                    st.dataframe(df)
+                st.success("Dairy Data Loaded Successfully")
+                st.dataframe(df)
 
-                    if isinstance(data_cheddar, list):
-                        df = pd.DataFrame(data_cheddar)
-                    elif isinstance(data_cheddar, dict) and "data" in data_cheddar:
-                        df = pd.DataFrame(data_cheddar["data"])
-                    else:
-                        df = pd.json_normalize(data_cheddar)
+                if isinstance(data_cheddar, list):
+                    df = pd.DataFrame(data_cheddar)
+                elif isinstance(data_cheddar, dict) and "data" in data_cheddar:
+                    df = pd.DataFrame(data_cheddar["data"])
+                else:
+                    df = pd.json_normalize(data_cheddar)
 
-                    st.success("Cheddar Data Loaded Successfully (Only 'IE','DE','NL','PL' report cheddar)")
-                    st.dataframe(df)
+                st.success("Cheddar Data Loaded Successfully (Only 'IE','DE','NL','PL' report cheddar)")
+                st.dataframe(df)
 
-                except Exception as e:
-                    st.error(f"Error fetching data: {e}")
+            except Exception as e:
+                st.error(f"Error fetching data: {e}")
 
