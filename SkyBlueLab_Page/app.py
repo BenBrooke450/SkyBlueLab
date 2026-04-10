@@ -657,23 +657,18 @@ elif choice == "TEST":
                     params.append("months=" + ",".join(map(str, months)))
                 return milk + "&".join(params)
 
-            def build_url_cheddar(years, countries, months):
+            def build_url_cheddar(years, countries, month_to_weeks):
                 cheddar = f"https://ec.europa.eu/agrifood/api/dairy/prices?"
                 params = []
                 if years:
                     params.append("years=" + ",".join(map(str, years)))
-                if countries:
-                    params.append("memberStateCodes=" + ",".join(countries))
-                if months:
-                    params.append("months=" + ",".join(map(str, months)))
-                return cheddar + "&".join(params) + "&products=CHEDDAR"
 
+                return cheddar + "&".join(params) + "&products=CHEDDAR"
 
             milk_url = build_url_milk(selected_years, selected_countries, selected_months)
             cheddar_url = build_url_cheddar(selected_years, selected_countries, selected_months)
 
             if st.button("Fetch data"):
-                st.session_state.show_filters = False
                 try:
                     response_milk = requests.get(milk_url, timeout=30)
                     response_cheddar = requests.get(cheddar_url, timeout=30)
