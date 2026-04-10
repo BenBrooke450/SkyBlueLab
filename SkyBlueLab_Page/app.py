@@ -626,19 +626,15 @@ elif choice == "TEST":
 
         col1, col2 = st.columns([1, 1])
 
-        if "year_pick" not in st.session_state:
-            st.session_state.year_pick = False
-
-        if not st.session_state.year_pick:
-            EU_COUNTRIES = [
+        EU_COUNTRIES = [
                 "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL",
                 "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
                 "SI", "ES", "SE"
             ]
 
-            YEARS = list(range(2020, 2025))
-            MONTHS = list(range(1, 13))
-            WEEKS = list(range(1, 52))
+        YEARS = list(range(2020, 2025))
+        MONTHS = list(range(1, 13))
+        WEEKS = list(range(1, 52))
 
         st.header("Filters")
 
