@@ -636,11 +636,12 @@ elif choice == "TEST":
 
             YEARS = list(range(2020, 2025))
             MONTHS = list(range(1, 13))
+            WEEKS = list(range(1, 52))
 
 
             st.header("Filters")
 
-            with st.expander("Filters", expanded=True):
+            with st.expander("Dairy Filters", expanded=True):
                 selected_years = st.multiselect("Select years", YEARS, default=[2024])
                 selected_countries = st.multiselect("Select countries", EU_COUNTRIES, default=["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL","HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK","SI", "ES", "SE"])
                 selected_months = st.multiselect("Select months", MONTHS, default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
@@ -657,11 +658,23 @@ elif choice == "TEST":
                     params.append("months=" + ",".join(map(str, months)))
                 return milk + "&".join(params)
 
-            def build_url_cheddar(years, countries, month_to_weeks):
+
+
+            with st.expander("Cheddar Filters", expanded=True):
+                selected_years_C = st.multiselect("Select years", YEARS, default=[2024])
+                selected_countries_C = st.multiselect("Select countries - Only 'IE','DE','NL','PL' report cheddar", EU_COUNTRIES, default=['IE','DE','NL','PL'])
+                selected_weeks = st.slider("Select weeks", WEEKS, default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52])
+
+
+            def build_url_cheddar(years, countries, weeks):
                 cheddar = f"https://ec.europa.eu/agrifood/api/dairy/prices?"
                 params = []
                 if years:
                     params.append("years=" + ",".join(map(str, years)))
+                if countries:
+                    params.append("memberStateCodes=" + ",".join(countries))
+                if weeks:
+                    params.append("weeks=" + ",".join(map(str, weeks)))
 
                 return cheddar + "&".join(params) + "&products=CHEDDAR"
 
@@ -694,7 +707,7 @@ elif choice == "TEST":
                     else:
                         df = pd.json_normalize(data_cheddar)
 
-                    st.success("Cheddar Data Loaded Successfully")
+                    st.success("Cheddar Data Loaded Successfully (Only 'IE','DE','NL','PL' report cheddar)")
                     st.dataframe(df)
 
                 except Exception as e:
