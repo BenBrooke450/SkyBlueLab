@@ -660,8 +660,12 @@ elif choice == "TEST":
             with st.expander("Cheddar Filters", expanded=True):
                 selected_years_C = st.multiselect("Select years", YEARS, default=[2024])
                 selected_countries_C = st.multiselect("Select countries - Only 'IE','DE','NL','PL' report cheddar", EU_COUNTRIES, default=['IE','DE','NL','PL'])
-                selected_weeks = st.slider("Select weeks", WEEKS, default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52])
-
+                selected_weeks = st.slider(
+                    "Select week range",
+                    min_value=1,
+                    max_value=52,
+                    value=(1, 52)
+                )
 
             def build_url_cheddar(years, countries, weeks):
                 cheddar = f"https://ec.europa.eu/agrifood/api/dairy/prices?"
