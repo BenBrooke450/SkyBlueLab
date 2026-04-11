@@ -633,7 +633,7 @@ elif choice == "TEST":
 
         fig = map_of_europe()
 
-        fig.show()
+        st.plotly_chart(fig, use_container_width=True)
 
         col1, col2 = st.columns([1, 1])
 

@@ -350,6 +350,3 @@ def map_of_europe():
 
 
     return fig
-
-
-map_of_europe()
