@@ -16,3 +16,4 @@ datashader
 transformers
 pandas
 requests
+pyjstat

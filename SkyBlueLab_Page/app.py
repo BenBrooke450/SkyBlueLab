@@ -6,6 +6,11 @@ import base64
 from openai import OpenAI
 
 
+import sys
+import os
+from Dairy_Calculations_PySpark.THI_map import map_of_europe
+
+
 
 st.set_page_config(page_title="SkyBlueLab | Benjamin Brooke", page_icon="🌐", layout="wide",initial_sidebar_state="expanded")
 
@@ -624,93 +629,98 @@ elif choice == "TEST":
 
     if st.session_state.test:
 
+        st.info('Market data on European agriculture provided by the European Commission - \n https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html \n https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en \n https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download')
+
+        fig = map_of_europe()
+
+        fig.show()
+
         col1, col2 = st.columns([1, 1])
 
         EU_COUNTRIES = [
-                "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL",
-                "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
-                "SI", "ES", "SE"
-            ]
+            "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL",
+            "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
+            "SI", "ES", "SE"
+        ]
 
-        YEARS = list(range(2020, 2025))
+        YEARS = list(range(2020, 2026))
         MONTHS = list(range(1, 13))
-        WEEKS = list(range(1, 52))
 
-        st.header("Filters")
+        if "expanded" not in st.session_state:
+            st.session_state.expanded = True
 
-        with col1:
-            with st.expander("Dairy Filters", expanded=True):
-                selected_years = st.multiselect("Select years", YEARS, default=[2024])
-                selected_countries = st.multiselect("Select countries", EU_COUNTRIES, default=["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "EL","HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK","SI", "ES", "SE"])
-                selected_months = st.multiselect("Select months", MONTHS, default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+
+        if st.session_state.expanded:
+            with col1:
+                with st.expander("Dairy Filters", expanded=True):
+                    selected_years = st.multiselect("Select years for Dairy", YEARS, default=[2024])
+                    selected_countries = st.multiselect("Select countries for Dairy", EU_COUNTRIES,
+                                                        default=["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI",
+                                                                 "FR", "DE", "EL", "HU"])
+                    selected_months = st.multiselect("Select months for Dairy", MONTHS,
+                                                     default=[1, 2, 3, 4, 5, 6])
+
+            with col2:
+                with st.expander("Cheddar Filters", expanded=True):
+                    WEEKS = list(range(1, 53))
+                    selected_years_C = st.multiselect("Select years for Cheddar", YEARS, default=[2024])
+                    selected_countries_C = st.multiselect(
+                        "Select countries for Cheddar - Only ['IE','DE','NL','PL'] - report cheddar", EU_COUNTRIES,
+                        default=['IE', 'DE', 'NL', 'PL'])
+                    selected_weeks_C = st.multiselect("Select weeks for Cheddar", WEEKS, default=[1,2,3,4,5,6,7,8,9])
+
 
 
             def build_url_milk(years, countries, months):
                 milk = "https://www.ec.europa.eu/agrifood/api/rawMilk/prices?"
                 params = []
-                if years:
-                    params.append("years=" + ",".join(map(str, years)))
-                if countries:
-                    params.append("memberStateCodes=" + ",".join(countries))
-                if months:
-                    params.append("months=" + ",".join(map(str, months)))
-                return milk + "&".join(params) + "&PRODUCTS=Raw Milk"
+                if years: params.append("years=" + ",".join(map(str, years)))
+                if countries: params.append("memberStateCodes=" + ",".join(countries))
+                if months: params.append("months=" + ",".join(map(str, months)))
+                return milk + "&".join(params) + "&products=Raw%20milk"
 
-        with col2:
-            with st.expander("Cheddar Filters", expanded=True):
-                selected_years_C = st.multiselect("Select years", YEARS, default=[2024])
-                selected_countries_C = st.multiselect("Select countries - Only 'IE','DE','NL','PL' report cheddar", EU_COUNTRIES, default=['IE','DE','NL','PL'])
-                selected_weeks = st.slider(
-                    "Select week range",
-                    min_value=1,
-                    max_value=52,
-                    value=(1, 52)
-                )
 
             def build_url_cheddar(years, countries, weeks):
-                cheddar = f"https://ec.europa.eu/agrifood/api/dairy/prices?"
-                params = []
-                if years:
-                    params.append("years=" + ",".join(map(str, years)))
-                if countries:
-                    params.append("memberStateCodes=" + ",".join(countries))
-                if weeks:
-                    params.append("weeks=" + ",".join(map(str, weeks)))
+                cheddar = f"https://www.ec.europa.eu/agrifood/api/dairy/prices?"
+                params_c = []
+                if years: params_c.append("years=" + ",".join(map(str, years)))
+                if countries: params_c.append("memberStateCodes=" + ",".join(countries))
+                if weeks: params_c.append("weeks=" + ",".join(map(str, weeks)))
+                return cheddar + "&".join(params_c) + "&products=Cheddar"
 
-                return cheddar + "&".join(params) + "&products=CHEDDAR"
 
-        milk_url = build_url_milk(selected_years, selected_countries, selected_months)
-        cheddar_url = build_url_cheddar(selected_years, selected_countries, selected_months)
+            st.session_state.milk_url = build_url_milk(selected_years, selected_countries, selected_months)
+            st.session_state.cheddar_url = build_url_cheddar(selected_years_C, selected_countries_C, selected_weeks_C)
 
         if st.button("Fetch data"):
-            try:
-                response_milk = requests.get(milk_url, timeout=30)
-                response_cheddar = requests.get(cheddar_url, timeout=30)
-                data_milk = response_milk.json()
-                data_cheddar = response_cheddar.json()
+            st.session_state.expanded = False
+            st.rerun()
 
+        if not st.session_state.expanded:
+            if st.button("Show Filters"):
+                st.session_state.expanded = True
+                st.rerun()
 
-                # Try to normalize response
-                if isinstance(data_milk, list):
-                    df = pd.DataFrame(data_milk)
-                elif isinstance(data_milk, dict) and "data" in data_milk:
-                    df = pd.DataFrame(data_milk["data"])
-                else:
-                    df = pd.json_normalize(data_milk)
+            response_milk = requests.get(st.session_state.milk_url, timeout=30)
+            response_cheddar = requests.get(st.session_state.cheddar_url, timeout=30)
+            data_milk = response_milk.json()
+            data_cheddar = response_cheddar.json()
 
-                st.success("Dairy Data Loaded Successfully")
-                st.dataframe(df)
+            col3, col4 = st.columns([1, 1])
 
-                if isinstance(data_cheddar, list):
-                    df = pd.DataFrame(data_cheddar)
-                elif isinstance(data_cheddar, dict) and "data" in data_cheddar:
-                    df = pd.DataFrame(data_cheddar["data"])
-                else:
-                    df = pd.json_normalize(data_cheddar)
+            with col3:
+                try:
+                    df = pd.DataFrame(data_milk) if isinstance(data_milk, list) else pd.json_normalize(data_milk)
+                    st.success("Dairy Data Loaded Successfully")
+                    st.dataframe(df)
+                except Exception as e:
+                    st.error(f"Error fetching data: {e}")
 
-                st.success("Cheddar Data Loaded Successfully (Only 'IE','DE','NL','PL' report cheddar)")
-                st.dataframe(df)
-
-            except Exception as e:
-                st.error(f"Error fetching data: {e}")
-
+            with col4:
+                try:
+                    df = pd.DataFrame(data_cheddar) if isinstance(data_cheddar, list) else pd.json_normalize(
+                        data_cheddar)
+                    st.success("Cheddar Data Loaded Successfully")
+                    st.dataframe(df)
+                except Exception as e:
+                    st.error(f"Error fetching data: {e}")
