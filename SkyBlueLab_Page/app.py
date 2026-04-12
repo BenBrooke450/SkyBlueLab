@@ -663,35 +663,50 @@ elif choice == "TEST":
 
         st.divider()
 
+        st.markdown(""" **Interactive map for THI using seasonal temperatures and humidity from EuroStats.**""")
+
         fig = map_of_europe()
 
         st.plotly_chart(fig, use_container_width=True)
 
         st.divider()
 
-        YEARS = list(range(2020, 2026))
-        selected_year = st.selectbox(
-            "Select year for Dairy Analysis",
-            options=YEARS,
-            index=YEARS.index(2024)
-        )
+        with st.container(border=True):
 
-        if st.button("Generate Report"):
-            with st.spinner(f"Fetching {selected_year} data via Spark..."):
+            st.markdown(""" **Data Analysis - SCRIPT TO WRITE **""")
+
+            col1, col2 = st.columns([3, 1])
+
+            with col1:
+                YEARS = list(range(2020, 2026))
+                selected_year = st.selectbox(
+                    "Select analysis period:",
+                    options=YEARS,
+                    index=YEARS.index(2024),
+                    label_visibility="collapsed"
+                )
+
+            with col2:
+                generate_clicked = st.button("Run Spark Job", use_container_width=True, type="primary")
+
+        if generate_clicked:
+            status_text = st.empty()
+            status_text.status(f"Starting Spark Session for {selected_year}...", expanded=True)
+
+            with st.spinner("Processing Large-Scale Dairy Data..."):
                 fig, df_cheese = get_cheddar_price(selected_year)
 
-                st.divider()
+                # Success Toast!
+                st.toast(f"Data for {selected_year} processed successfully!")
 
                 st.plotly_chart(fig, use_container_width=True)
 
-                st.divider()
-
-                st.subheader(f"Raw Data for {selected_year}")
-                st.dataframe(df_cheese.limit(500).toPandas(), use_container_width=True)
+                with st.expander(f"View Spark Output (Raw Data: {selected_year})", expanded=False):
+                    st.dataframe(df_cheese.limit(500).toPandas(), use_container_width=True)
 
         else:
-            st.info("Select a year and click 'Generate Report' to start the PySpark job.")
-
+            st.info(
+                "**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
 
         st.divider()
 
