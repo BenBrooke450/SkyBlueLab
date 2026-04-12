@@ -76,7 +76,7 @@ with st.sidebar:
 
         img_path = "SkyBlueLab_Page/Assets/Gemini_Generated_Image_xvmap5xvmap5xvma.png"
 
-        if choice == "TEST":
+        if choice == "TEST" or choice == "OCEAN":
             img_path = "SkyBlueLab_Page/Assets/SkyBlueLab.png"
 
 

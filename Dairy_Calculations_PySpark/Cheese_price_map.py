@@ -16,8 +16,12 @@ def get_cheddar_price(year : int):
 
     spark = SparkSession.builder \
         .appName("Dairy_Project") \
-        .master("local[*]") \
-        .config("spark.driver.bindAddress", "127.0.0.1") \
+        .master("local[1]") \
+        .config("spark.driver.memory", "512m") \
+        .config("spark.executor.memory", "512m") \
+        .config("spark.memory.offHeap.enabled", "false") \
+        .config("spark.sql.shuffle.partitions", "1") \
+        .config("spark.ui.enabled", "false") \
         .getOrCreate()
 
     year = str(year)
@@ -41,6 +45,8 @@ def get_cheddar_price(year : int):
                                                                                   col("product")))
 
     pdf = df_transformed.select("Date_Parsed", "Price_Numeric", "memberStateName", "product", "weekNumber").toPandas()
+
+    spark.stop()
 
     fig = px.line(
         pdf,
