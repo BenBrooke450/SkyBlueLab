@@ -788,7 +788,7 @@ elif choice == "TEST":
                 st.rerun()
 
             else:
-                st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+                st.info("This report uses a distributed Spark engine to calculate multi-country price trends.")
 
             if st.session_state.price_reports is not None:
                 r = st.session_state.price_reports
@@ -874,7 +874,7 @@ elif choice == "TEST":
                 st.rerun()
 
             else:
-                st.info("**Pro-Tip:** This report uses a distributed Spark engine to process large-scale stats data.")
+                st.info("This report uses a distributed Spark engine to process large-scale stats data.")
 
             if st.session_state.dairy_reports is not None:
                 r = st.session_state.dairy_reports
