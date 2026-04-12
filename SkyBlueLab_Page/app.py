@@ -630,11 +630,11 @@ elif choice == "TEST":
 
     if st.session_state.test:
 
-        st.expander(st.info('Market data on European agriculture provided by the European Commission:'
+        st.info('Market data on European agriculture provided by the European Commission:'
                 ' \n * https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html '
                 ' \n * https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en '
                 ' \n * https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download'
-                ' \n\n TO WRITE A SCRIPT'))
+                ' \n\n TO WRITE A SCRIPT')
 
         st.divider()
 
