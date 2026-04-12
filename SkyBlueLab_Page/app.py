@@ -691,7 +691,7 @@ elif choice == "TEST":
             with col1:
                 YEARS = list(range(2020, 2026))
                 selected_year = st.selectbox(
-                    "Select analysis period:",
+                    "Select Analysis Period:",
                     options=YEARS,
                     index=YEARS.index(2024),
                     label_visibility="collapsed"
@@ -760,7 +760,7 @@ elif choice == "TEST":
 
         else:
             st.info(
-                "**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+                "**Pro-Tip:** This report uses a distributed Spark engine to process large-scale stats data.")
 
         st.write("")
 
@@ -777,20 +777,20 @@ elif choice == "TEST":
             with col1:
                 YEARS = list(range(2020, 2026))
                 selected_year = st.selectbox(
-                    "Select stats period:",
+                    "Select Period:",
                     options=YEARS,
                     index=YEARS.index(2024),
                     label_visibility="collapsed"
                 )
 
             with col2:
-                generate_clicked_button = st.button("Run Spark Job - Dairy price Data ", use_container_width=True, type="primary")
+                generate_clicked_button = st.button("Run Spark Job - Dairy Price Data ", use_container_width=True, type="primary")
 
         if generate_clicked_button:
-            status_text = st.empty()
-            status_text.status(f"Starting Spark Session for {selected_year}...", expanded=True)
+            status_text_Price = st.empty()
+            status_text_Price.status(f"Starting Spark Session for {selected_year}...", expanded=True)
 
-            with st.spinner("Processing Large-Scale Dairy Data..."):
+            with st.spinner("Processing Large-Scale Dairy Price Data..."):
                 fig, final_df_for_table = get_cheddar_price(selected_year)
 
                 st.toast(f"Data for {selected_year} processed successfully!")
