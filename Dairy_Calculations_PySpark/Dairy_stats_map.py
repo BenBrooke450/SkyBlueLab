@@ -83,7 +83,7 @@ def get_dairy_stats(year : int, country : str):
     fig.update_yaxes(type="log")
 
     fig.update_layout(
-        width=1400,
+        width=1700,
         height=600
     )
 
