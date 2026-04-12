@@ -1067,7 +1067,7 @@ elif choice == "TEST":
                     key="Dairy_Energy_Data_button"
                 )
 
-            with col3:
+            with col2:
                 generate_clicked_button = st.button("Run Spark Job - Energy Price Data", key="Energy_Price_Data",use_container_width=True, type="primary")
 
 
