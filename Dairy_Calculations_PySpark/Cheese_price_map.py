@@ -14,7 +14,11 @@ def get_cheddar_price(year : int):
     import requests
     import plotly.express as px
 
-    spark = SparkSession.builder.appName("Dairy_Project").getOrCreate()
+    spark = SparkSession.builder \
+        .appName("Dairy_Project") \
+        .master("local[*]") \
+        .config("spark.driver.bindAddress", "127.0.0.1") \
+        .getOrCreate()
 
     year = str(year)
 
