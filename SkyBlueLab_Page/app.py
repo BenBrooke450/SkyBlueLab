@@ -1029,7 +1029,7 @@ elif choice == "TEST":
                 st.rerun()
 
             else:
-                st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+                st.info("**This report uses a distributed Spark engine to calculate multi-country price trends.")
 
             if st.session_state.dairy_yield_reports is not None:
                 r = st.session_state.dairy_yield_reports
@@ -1054,18 +1054,21 @@ elif choice == "TEST":
 
         with st.expander("Model - Energy Prices across the European Union", expanded=True):
 
+            col1, col2 = st.columns([3, 1])
 
             YEARS = list(range(2020, 2026))
 
-            selected_year = st.selectbox(
-                "Select Period:",
-                options=YEARS,
-                index=YEARS.index(2023),
-                label_visibility="collapsed",
-                key="Dairy_Energy_Data_button"
-            )
+            with col1:
+                selected_year = st.selectbox(
+                    "Select Period:",
+                    options=YEARS,
+                    index=YEARS.index(2023),
+                    label_visibility="collapsed",
+                    key="Dairy_Energy_Data_button"
+                )
 
-            generate_clicked_button = st.button("Run Spark Job - Energy Price Data", key="Energy_Price_Data",use_container_width=True, type="primary")
+            with col3:
+                generate_clicked_button = st.button("Run Spark Job - Energy Price Data", key="Energy_Price_Data",use_container_width=True, type="primary")
 
 
             if generate_clicked_button:
@@ -1085,7 +1088,7 @@ elif choice == "TEST":
                 st.rerun()
 
             else:
-                st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+                st.info("This report uses a distributed Spark engine to calculate multi-country price trends.")
 
 
             if st.session_state.energy_price_reports is not None:
@@ -1160,7 +1163,7 @@ elif choice == "TEST":
                 st.rerun()
 
             else:
-                st.info("**Pro-Tip:** This report uses a distributed Spark engine to process large-scale stats data.")
+                st.info("This report uses a distributed Spark engine to process large-scale stats data.")
 
             if st.session_state.weather_reports is not None:
                 r = st.session_state.weather_reports

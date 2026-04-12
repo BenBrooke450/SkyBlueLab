@@ -46,25 +46,37 @@ def get_yield_stats(year : int):
                             (col("Item of milk") == "Products obtained (1 000 t)"), col("value"))).withColumn(
         "total_milk_collected", col("total_milk_collected") * 1000)
 
+    df = df.withColumn("total_milk_collected", max(col("total_milk_collected")).over(
+        Window.partitionBy("Geopolitical entity (reporting)", "Time")))
+
     df = df.withColumn("total_milk_fat",
                        when((
                                         col("Dairy and other animal products (except meat)") == "Raw cows' milk delivered to dairies") &
                             (col("Item of milk") == "Fat content (t)"), col("value")))
+
+    df = df.withColumn("total_milk_fat",
+                       max(col("total_milk_fat")).over(Window.partitionBy("Geopolitical entity (reporting)", "Time")))
 
     df = df.withColumn("total_milk_Protein",
                        when((
                                         col("Dairy and other animal products (except meat)") == "Raw cows' milk delivered to dairies") &
                             (col("Item of milk") == "Protein content (t)"), col("value")))
 
+    df = df.withColumn("total_milk_collected", max(col("total_milk_collected")).over(
+        Window.partitionBy("Geopolitical entity (reporting)", "Time")))
+
     df = df.withColumn("total_hard_cheese",
                        when((col("Dairy and other animal products (except meat)") == "Hard cheese") &
                             (col("Item of milk") == "Products obtained (1 000 t)"), col("value")))
 
-    df = df.withColumn("milk_fat_pct", col("total_milk_fat") / col("total_milk_collected") * 100)
+    df = df.withColumn("total_hard_cheese", max(col("total_hard_cheese")).over(
+        Window.partitionBy("Geopolitical entity (reporting)", "Time")))
 
-    df = df.withColumn("casein_pct", (col("total_milk_Protein") / col("total_milk_collected") * 0.78) * 100)
+    df = df.withColumn("milk_fat_pct", col("total_milk_fat") / col("total_milk_collected"))
 
-    df = df.withColumn("hist_yield_ratio", col("total_hard_cheese", ) / col("total_milk_collected") * 100)
+    df = df.withColumn("casein_pct", (col("total_milk_Protein") / col("total_milk_collected") * 0.78))
+
+    df = df.withColumn("hist_yield_ratio", col("total_hard_cheese", ) / col("total_milk_collected"))
 
     df = df.toPandas()
 
