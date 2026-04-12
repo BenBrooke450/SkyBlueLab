@@ -35,6 +35,17 @@ def map_of_europe():
         "Humid_Subtropical_Adriatic": [82, 76, 72, 70, 70, 70, 68, 70, 75, 80, 83, 84]
     }
 
+    temperature_profiles = {
+        "Hyper_Oceanic": [8, 8, 9, 11, 13, 15, 17, 17, 16, 13, 10, 8],
+        "Temperate_Maritime": [7, 7, 9, 12, 15, 18, 20, 20, 18, 14, 10, 8],
+        "Continental_Standard": [0, 2, 7, 13, 18, 22, 25, 24, 20, 14, 7, 2],
+        "Alpine_Boreal": [-5, -3, 1, 6, 11, 15, 18, 17, 13, 7, 1, -3],
+        "Arid_Continental_South": [6, 9, 14, 20, 27, 33, 37, 36, 30, 22, 14, 8],
+        "Mediterranean_Coast": [10, 11, 13, 16, 20, 24, 27, 27, 24, 20, 15, 12],
+        "Sub_Mediterranean": [6, 8, 12, 16, 21, 26, 29, 29, 25, 19, 12, 7],
+        "Humid_Subtropical_Adriatic": [8, 9, 12, 16, 21, 25, 28, 28, 24, 19, 13, 9]
+    }
+
 
     region_to_humidity = {
         'ES64': humidity_profiles["Mediterranean_Coast"], # Melilla
@@ -298,22 +309,13 @@ def map_of_europe():
 
         rh_list = region_to_humidity.get(nuts_id)
 
-        if rh_list is None:
-            rh_list = humidity_profiles["Continental_Standard"]
+        climate = next((k for k, v in humidity_profiles.items() if v is rh_list),"Continental_Standard")
+
+        temp_list = temperature_profiles[climate]
 
         for m_idx, month in enumerate(months):
-            country_code = nuts_id[:2]
-
-            if country_code in ['ES', 'IT']:
-                lat_offset = 15
-            elif country_code in ['FR', 'DE']:
-                lat_offset = 5
-            else:
-                lat_offset = 0
-
-            temp = 10 + (15 * np.sin(np.pi * (m_idx - 2) / 10)) + lat_offset
-
-            rh = rh_list[m_idx]
+            temp = temp_list[m_idx] + np.random.normal(0, 1.5)
+            rh = rh_list[m_idx] + np.random.normal(0, 3)
 
             thi = (1.8 * temp + 32) - (0.55 - 0.0055 * rh) * (1.8 * temp - 26)
 

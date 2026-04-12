@@ -9,6 +9,7 @@ from openai import OpenAI
 import sys
 import os
 from Dairy_Calculations_PySpark.THI_map import map_of_europe
+from Dairy_Calculations_PySpark.Cheese_price_map import get_cheddar_price
 
 
 
@@ -629,11 +630,42 @@ elif choice == "TEST":
 
     if st.session_state.test:
 
-        st.info('Market data on European agriculture provided by the European Commission - \n https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html \n https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en \n https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download')
+        st.expander(st.info('Market data on European agriculture provided by the European Commission:'
+                ' \n * https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html '
+                ' \n * https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en '
+                ' \n * https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download'
+                ' \n\n TO WRITE A SCRIPT'))
+
+        st.divider()
 
         fig = map_of_europe()
 
         st.plotly_chart(fig, use_container_width=True)
+
+        st.divider()
+
+        YEARS = list(range(2020, 2026))
+        selected_year = st.selectbox(
+            "Select year for Dairy Analysis",
+            options=YEARS,
+            index=YEARS.index(2024)
+        )
+
+        if st.button("Generate Report"):
+            with st.spinner(f"Fetching {selected_year} data via Spark..."):
+                fig, df_cheese = get_cheddar_price(selected_year)
+
+                st.divider()
+
+                st.plotly_chart(fig, use_container_width=True)
+
+                st.divider()
+
+                st.subheader(f"Raw Data for {selected_year}")
+                st.dataframe(df_cheese.limit(500).toPandas(), use_container_width=True)
+
+        else:
+            st.info("Select a year and click 'Generate Report' to start the PySpark job.")
 
         col1, col2 = st.columns([1, 1])
 
