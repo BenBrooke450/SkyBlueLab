@@ -10,6 +10,7 @@ import sys
 import os
 from Dairy_Calculations_PySpark.THI_map import map_of_europe
 from Dairy_Calculations_PySpark.Cheese_price_map import get_cheddar_price
+from Dairy_Calculations_PySpark.Dairy_stats_map import get_dairy_stats
 
 
 
@@ -694,10 +695,100 @@ elif choice == "TEST":
                     label_visibility="collapsed"
                 )
 
+                COUNTRIES =  [
+                            "Belgium",
+                            "Bulgaria",
+                            "Czechia",
+                            "Denmark",
+                            "Germany",
+                            "Estonia",
+                            "Ireland",
+                            "Greece",
+                            "Spain",
+                            "France",
+                            "Croatia",
+                            "Italy",
+                            "Cyprus",
+                            "Latvia",
+                            "Lithuania",
+                            "Luxembourg",
+                            "Hungary",
+                            "Malta",
+                            "Netherlands",
+                            "Austria",
+                            "Poland",
+                            "Portugal",
+                            "Romania",
+                            "Slovenia",
+                            "Slovakia",
+                            "Finland",
+                            "Sweden",
+                            "Iceland",
+                            "Norway",
+                            "Switzerland",
+                            "United Kingdom",
+                            "Montenegro",
+                            "North Macedonia",
+                            "Albania",
+                            "Serbia",
+                            "Türkiye"]
+                selected_country = st.selectbox(
+                    "Select Country:",
+                    options=COUNTRIES,
+                    index=COUNTRIES.index("United Kingdom"),
+                    label_visibility="collapsed"
+                )
+
             with col2:
                 generate_clicked = st.button("Run Spark Job", use_container_width=True, type="primary")
 
         if generate_clicked:
+            status_text = st.empty()
+            status_text.status(f"Starting Spark Session for {selected_year} & {selected_country}...", expanded=True)
+
+            with st.spinner("Processing Large-Scale Dairy Data..."):
+                fig, df_filtered = get_dairy_stats(selected_year,selected_country)
+
+                st.toast(f"Data for {selected_year} & {selected_country} processed successfully!")
+
+                st.plotly_chart(fig, use_container_width=True)
+
+                with st.expander(f"View Spark Output (Raw Data: {selected_year} & {selected_country})", expanded=False):
+                    st.dataframe(df_filtered.head(500), use_container_width=True)
+
+        else:
+            st.info(
+                "**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+
+        st.write("")
+
+        st.divider()
+
+        st.write("")
+
+        st.divider()
+
+        st.write("")
+
+        with st.container(border=True):
+
+            st.markdown(""" **Data Analysis - SCRIPT TO WRITE **""")
+
+            col1, col2 = st.columns([3, 1])
+
+            with col1:
+                YEARS = list(range(2020, 2026))
+                selected_year = st.selectbox(
+                    "Select stats period:",
+                    options=YEARS,
+                    index=YEARS.index(2024),
+                    label_visibility="collapsed"
+                )
+
+            with col2:
+                generate_clicked_button = st.button("Run Spark Job", use_container_width=True, type="primary")
+
+        if generate_clicked_button:
             status_text = st.empty()
             status_text.status(f"Starting Spark Session for {selected_year}...", expanded=True)
 
@@ -720,6 +811,7 @@ elif choice == "TEST":
         st.divider()
 
         st.write("")
+
 
         col1, col2 = st.columns([1, 1])
 
