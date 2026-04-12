@@ -64,7 +64,7 @@ def get_cheddar_price(year : int):
             "weekNumber": True,
             "product": False
         },
-        title="Interactive Dairy Price Trends"
+        title="Interactive European Cheese Price Trends"
     )
 
     fig.update_yaxes(matches=None, title_text="Price (€)")

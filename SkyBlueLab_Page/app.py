@@ -611,6 +611,10 @@ elif choice == "RESEARCH & CERTIFICATES":
 
 elif choice == "TEST":
 
+
+
+
+
     if "test" not in st.session_state:
         st.session_state.test = False
 
@@ -622,6 +626,12 @@ elif choice == "TEST":
 
     if "expanded" not in st.session_state:
         st.session_state.expanded = True
+
+
+
+
+
+
 
     if not st.session_state.test:
         st.warning("Access Restricted")
@@ -660,8 +670,6 @@ elif choice == "TEST":
 
                         On top of this data layer, machine learning and deep learning models are developed using both scikit-learn and PyTorch. Traditional ML techniques are applied for predictive analytics, while neural networks are used for more advanced modelling tasks.
 
-                        Overall, this project demonstrates a production-style architecture, combining:
-
                         * Cloud infrastructure (Scaleway)
                         * Real-time API ingestion
                         * Distributed data processing (Spark)
@@ -672,200 +680,238 @@ elif choice == "TEST":
                         """)
 
             st.warning(
-                "I used Apache Spark instead of Databricks, as both are built on Spark but the free-tier UI in Databricks is very limited. I implemented all ETL pipelines using PySpark.")
+                "**This system uses Apache Spark instead of Databricks, as both are built on Spark but the free-tier UI in Databricks is very limited. I implemented all ETL pipelines using PySpark that clean and process all the ingested data.**")
+
+
+
+
+
 
         st.divider()
 
+
+
+
+
+
         with st.expander("European Dairy Heat Stress (THI)", expanded=True):
 
-            st.markdown("**Interactive map for THI using seasonal temperatures and humidity from EuroStats.**")
+            st.markdown("## **Interactive map for THI calculated using seasonal temperatures and humidity from EuroStats.**")
 
             fig = map_of_europe()
             st.plotly_chart(fig, use_container_width=True)
 
-        st.divider()
 
-        with st.container(border=True):
 
-            st.markdown("Data Analysis - SCRIPT TO WRITE")
 
-            col1, col2 = st.columns([3, 1])
-
-            YEARS = list(range(2020, 2025))
-
-            COUNTRIES = [
-                "Belgium","Bulgaria","Czechia","Denmark","Germany","Estonia",
-                "Ireland","Greece","Spain","France","Croatia","Italy","Cyprus",
-                "Latvia","Lithuania","Luxembourg","Hungary","Malta","Netherlands",
-                "Austria","Poland","Portugal","Romania","Slovenia","Slovakia",
-                "Finland","Sweden","Iceland","Norway","Switzerland",
-                "United Kingdom","Montenegro","North Macedonia","Albania",
-                "Serbia","Türkiye"
-            ]
-
-            with col1:
-                selected_year = st.selectbox(
-                    "Select Analysis Period:",
-                    options=YEARS,
-                    index=YEARS.index(2023),
-                    label_visibility="collapsed"
-                )
-
-                selected_country = st.selectbox(
-                    "Select Country:",
-                    options=COUNTRIES,
-                    index=COUNTRIES.index("United Kingdom"),
-                    label_visibility="collapsed"
-                )
-
-            with col2:
-                generate_clicked = st.button("Run Spark Job - Dairy Data", key="Dairy_Data", use_container_width=True, type="primary")
-
-        if generate_clicked:
-
-            fig, df_filtered = get_dairy_stats(selected_year, selected_country)
-
-            st.session_state.dairy_reports = {
-                "year": selected_year,
-                "country": selected_country,
-                "fig": fig,
-                "df": df_filtered
-            }
-
-            st.toast(f"Data for {selected_year} & {selected_country} processed successfully!")
-            st.rerun()
-
-        else:
-            st.info("**Pro-Tip:** This report uses a distributed Spark engine to process large-scale stats data.")
-
-        if st.session_state.dairy_reports is not None:
-            r = st.session_state.dairy_reports
-
-            st.plotly_chart(r["fig"], use_container_width=True)
-
-            with st.expander(f"View Spark Output (Raw Data: {r['year']} & {r['country']})", expanded=False):
-                st.dataframe(r["df"].head(500), use_container_width=True)
 
         st.divider()
 
-        with st.container(border=True):
 
-            st.markdown("Data Analysis - Comparative market analysis of dairy price volatility across the European Union.")
 
-            col1, col2 = st.columns([3, 1])
+        with st.expander("Cheese Price Volatility across the European Union", expanded=True):
 
-            YEARS = list(range(2020, 2026))
+            with st.container(border=True):
 
-            with col1:
-                selected_year = st.selectbox(
-                    "Select Period:",
-                    options=YEARS,
-                    index=YEARS.index(2023),
-                    label_visibility="collapsed"
-                )
+                st.markdown("## **Data Analysis - Comparative market analysis of cheese price volatility across the European Union.**")
 
-            with col2:
-                generate_clicked_button = st.button("Run Spark Job - Dairy Price Data", key="Dairy_Price_Data", use_container_width=True, type="primary")
+                col1, col2 = st.columns([3, 1])
 
-        if generate_clicked_button:
+                YEARS = list(range(2020, 2026))
 
-            fig, final_df_for_table = get_cheddar_price(selected_year)
+                with col1:
+                    selected_year = st.selectbox(
+                        "Select Period:",
+                        options=YEARS,
+                        index=YEARS.index(2023),
+                        label_visibility="collapsed"
+                    )
 
-            st.session_state.price_reports = {
-                "year": selected_year,
-                "fig": fig,
-                "df": final_df_for_table
-            }
+                with col2:
+                    generate_clicked_button = st.button("Run Spark Job - Cheese Price Data", key="Dairy_Price_Data", use_container_width=True, type="primary")
 
-            st.toast(f"Data for {selected_year} processed successfully!")
-            st.rerun()
+            if generate_clicked_button:
 
-        else:
-            st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+                status_text = st.empty()
+                status_text.status(f"Running Spark Session for {selected_year}...", expanded=True)
 
-        if st.session_state.price_reports is not None:
-            r = st.session_state.price_reports
+                fig, final_df_for_table = get_cheddar_price(selected_year)
 
-            st.plotly_chart(r["fig"], use_container_width=True)
+                st.session_state.price_reports = {
+                    "year": selected_year,
+                    "fig": fig,
+                    "df": final_df_for_table
+                }
 
-            with st.expander(f"View Spark Output (Raw Data: {r['year']})", expanded=False):
-                st.dataframe(r["df"].head(500), use_container_width=True)
-
-        col1, col2 = st.columns([1, 1])
-
-        EU_COUNTRIES = [
-            "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","EL",
-            "HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK",
-            "SI","ES","SE"
-        ]
-
-        YEARS = list(range(2020, 2026))
-        MONTHS = list(range(1, 13))
-
-        if st.session_state.expanded:
-
-            with col1:
-                with st.expander("Dairy Filters", expanded=True):
-                    selected_years = st.multiselect("Select years for Dairy", YEARS, default=[2023])
-                    selected_countries = st.multiselect("Select countries for Dairy", EU_COUNTRIES, default=["FR","DE"])
-                    selected_months = st.multiselect("Select months for Dairy", MONTHS, default=[1,2,3,4,5,6])
-
-            with col2:
-                with st.expander("Cheddar Filters", expanded=True):
-                    WEEKS = list(range(1, 53))
-                    selected_years_C = st.multiselect("Select years for Cheddar", YEARS, default=[2023])
-                    selected_countries_C = st.multiselect("Select countries for Cheddar - Only ['IE','DE','NL','PL'] - report cheddar", EU_COUNTRIES, default=['IE','DE','NL','PL'])
-                    selected_weeks_C = st.multiselect("Select weeks for Cheddar", WEEKS, default=[1,2,3,4,5,6,7,8,9])
-
-            def build_url_milk(years, countries, months):
-                milk = "https://www.ec.europa.eu/agrifood/api/rawMilk/prices?"
-                params = []
-                if years: params.append("years=" + ",".join(map(str, years)))
-                if countries: params.append("memberStateCodes=" + ",".join(countries))
-                if months: params.append("months=" + ",".join(map(str, months)))
-                return milk + "&".join(params) + "&products=Raw%20milk"
-
-            def build_url_cheddar(years, countries, weeks):
-                cheddar = f"https://www.ec.europa.eu/agrifood/api/dairy/prices?"
-                params_c = []
-                if years: params_c.append("years=" + ",".join(map(str, years)))
-                if countries: params_c.append("memberStateCodes=" + ",".join(countries))
-                if weeks: params_c.append("weeks=" + ",".join(map(str, weeks)))
-                return cheddar + "&".join(params_c) + "&products=Cheddar"
-
-            st.session_state.milk_url = build_url_milk(selected_years, selected_countries, selected_months)
-            st.session_state.cheddar_url = build_url_cheddar(selected_years_C, selected_countries_C, selected_weeks_C)
-
-        if st.button("Fetch data"):
-            st.session_state.expanded = False
-            st.rerun()
-
-        if not st.session_state.expanded:
-
-            if st.button("Show Filters"):
-                st.session_state.expanded = True
+                st.toast(f"Data for {selected_year} processed successfully!")
                 st.rerun()
 
-            response_milk = requests.get(st.session_state.milk_url, timeout=30)
-            response_cheddar = requests.get(st.session_state.cheddar_url, timeout=30)
+            else:
+                st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
 
-            data_milk = response_milk.json()
-            data_cheddar = response_cheddar.json()
+            if st.session_state.price_reports is not None:
+                r = st.session_state.price_reports
 
-            col3, col4 = st.columns([1, 1])
+                st.plotly_chart(r["fig"], use_container_width=True)
 
-            with col3:
-                try:
-                    df = pd.DataFrame(data_milk) if isinstance(data_milk, list) else pd.json_normalize(data_milk)
-                    st.success("Dairy Data Loaded Successfully")
-                    st.dataframe(df)
-                except Exception as e:
-                    st.error(f"Error fetching data: {e}")
+                with st.expander(f"View Spark Output (Raw Data: {r['year']})", expanded=False):
+                    st.dataframe(r["df"].head(500), use_container_width=True)
 
-            with col4:
-                try:
-                    df = pd.DataFrame(data_cheddar) if isinstance(data_cheddar, list) else pd.json_normalize(data_cheddar)
-                    st.success("Cheddar Data Loaded Successfully")
-                    st.dataframe(df)
-                except Exception as e:
-                    st.error(f"Error fetching data: {e}")
+
+
+        st.divider()
+
+
+        with st.expander("Dairy Content Breakdown", expanded=True):
+
+            with st.container(border=True):
+
+                st.markdown("## **Data Analysis - Interactive bar chart for showing Dairy Content in the European Union.**")
+
+                col1, col2 = st.columns([3, 1])
+
+                YEARS = list(range(2020, 2025))
+
+                COUNTRIES = [
+                    "Belgium","Bulgaria","Czechia","Denmark","Germany","Estonia",
+                    "Ireland","Greece","Spain","France","Croatia","Italy","Cyprus",
+                    "Latvia","Lithuania","Luxembourg","Hungary","Malta","Netherlands",
+                    "Austria","Poland","Portugal","Romania","Slovenia","Slovakia",
+                    "Finland","Sweden","Iceland","Norway","Switzerland",
+                    "United Kingdom","Montenegro","North Macedonia","Albania",
+                    "Serbia","Türkiye"
+                ]
+
+                with col1:
+                    selected_year = st.selectbox(
+                        "Select Analysis Period:",
+                        options=YEARS,
+                        index=YEARS.index(2023),
+                        label_visibility="collapsed"
+                    )
+
+                    selected_country = st.selectbox(
+                        "Select Country:",
+                        options=COUNTRIES,
+                        index=COUNTRIES.index("United Kingdom"),
+                        label_visibility="collapsed"
+                    )
+
+                with col2:
+                    generate_clicked = st.button("Run Spark Job - Dairy Data", key="Dairy_Data", use_container_width=True, type="primary")
+
+            if generate_clicked:
+
+                status_text = st.empty()
+                status_text.status(f"Running Spark Session for {selected_year} & {selected_country}...", expanded=True)
+
+                fig, df_filtered = get_dairy_stats(selected_year, selected_country)
+
+                st.session_state.dairy_reports = {
+                    "year": selected_year,
+                    "country": selected_country,
+                    "fig": fig,
+                    "df": df_filtered
+                }
+
+                st.toast(f"Data for {selected_year} & {selected_country} processed successfully!")
+                st.rerun()
+
+            else:
+                st.info("**Pro-Tip:** This report uses a distributed Spark engine to process large-scale stats data.")
+
+            if st.session_state.dairy_reports is not None:
+                r = st.session_state.dairy_reports
+
+                st.plotly_chart(r["fig"], use_container_width=True)
+
+                with st.expander(f"View Spark Output (Raw Data: {r['year']} & {r['country']})", expanded=False):
+                    st.dataframe(r["df"].head(500), use_container_width=True)
+
+
+        st.divider()
+
+
+        with st.expander("Dairy Prices and Cheddar Prices across the European Union", expanded=True):
+
+            st.info("**Pro-Tip:** Use the filters to see dairy prices across Europe")
+
+
+            col1, col2 = st.columns([1, 1])
+
+            EU_COUNTRIES = [
+                "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","EL",
+                "HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK",
+                "SI","ES","SE"
+            ]
+
+            YEARS = list(range(2020, 2026))
+            MONTHS = list(range(1, 13))
+
+            if st.session_state.expanded:
+
+                with col1:
+                    with st.expander("Dairy Filters", expanded=True):
+                        selected_years = st.multiselect("Select years for Dairy", YEARS, default=[2023])
+                        selected_countries = st.multiselect("Select countries for Dairy", EU_COUNTRIES, default=["FR","DE"])
+                        selected_months = st.multiselect("Select months for Dairy", MONTHS, default=[1,2,3,4,5,6])
+
+                with col2:
+                    with st.expander("Cheddar Filters", expanded=True):
+                        WEEKS = list(range(1, 53))
+                        selected_years_C = st.multiselect("Select years for Cheddar", YEARS, default=[2023])
+                        selected_countries_C = st.multiselect("Select countries for Cheddar - Only ['IE','DE','NL','PL'] - report cheddar", EU_COUNTRIES, default=['IE','DE','NL','PL'])
+                        selected_weeks_C = st.multiselect("Select weeks for Cheddar", WEEKS, default=[1,2,3,4,5,6,7,8,9])
+
+                def build_url_milk(years, countries, months):
+                    milk = "https://www.ec.europa.eu/agrifood/api/rawMilk/prices?"
+                    params = []
+                    if years: params.append("years=" + ",".join(map(str, years)))
+                    if countries: params.append("memberStateCodes=" + ",".join(countries))
+                    if months: params.append("months=" + ",".join(map(str, months)))
+                    return milk + "&".join(params) + "&products=Raw%20milk"
+
+                def build_url_cheddar(years, countries, weeks):
+                    cheddar = f"https://www.ec.europa.eu/agrifood/api/dairy/prices?"
+                    params_c = []
+                    if years: params_c.append("years=" + ",".join(map(str, years)))
+                    if countries: params_c.append("memberStateCodes=" + ",".join(countries))
+                    if weeks: params_c.append("weeks=" + ",".join(map(str, weeks)))
+                    return cheddar + "&".join(params_c) + "&products=Cheddar"
+
+                st.session_state.milk_url = build_url_milk(selected_years, selected_countries, selected_months)
+                st.session_state.cheddar_url = build_url_cheddar(selected_years_C, selected_countries_C, selected_weeks_C)
+
+            if st.button("Fetch data"):
+                st.session_state.expanded = False
+                st.rerun()
+
+            if not st.session_state.expanded:
+
+                if st.button("Show Filters"):
+                    st.session_state.expanded = True
+                    st.rerun()
+
+                response_milk = requests.get(st.session_state.milk_url, timeout=30)
+                response_cheddar = requests.get(st.session_state.cheddar_url, timeout=30)
+
+                data_milk = response_milk.json()
+                data_cheddar = response_cheddar.json()
+
+                col3, col4 = st.columns([1, 1])
+
+                with col3:
+                    try:
+                        df = pd.DataFrame(data_milk) if isinstance(data_milk, list) else pd.json_normalize(data_milk)
+                        st.success("Dairy Data Loaded Successfully")
+                        st.dataframe(df)
+                    except Exception as e:
+                        st.error(f"Error fetching data: {e}")
+
+                with col4:
+                    try:
+                        df = pd.DataFrame(data_cheddar) if isinstance(data_cheddar, list) else pd.json_normalize(data_cheddar)
+                        st.success("Cheddar Data Loaded Successfully")
+                        st.dataframe(df)
+                    except Exception as e:
+                        st.error(f"Error fetching data: {e}")
