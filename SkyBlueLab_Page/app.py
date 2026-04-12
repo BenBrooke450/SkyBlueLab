@@ -709,11 +709,11 @@ elif choice == "TEST":
 
 
 
-        with st.expander("Cheese Price Volatility across the European Union", expanded=True):
+        with st.expander("Data Analysis - Cheese Price Volatility across the European Union", expanded=True):
 
             with st.container(border=True):
 
-                st.markdown("## **Data Analysis - Comparative market analysis of cheese price volatility across the European Union.**")
+                st.markdown("## **Comparative market analysis of cheese price volatility across the European Union.**")
 
                 col1, col2 = st.columns([3, 1])
 
@@ -762,11 +762,11 @@ elif choice == "TEST":
         st.divider()
 
 
-        with st.expander("Dairy Content Breakdown", expanded=True):
+        with st.expander("Data Analysis - Dairy Content Breakdown", expanded=True):
 
             with st.container(border=True):
 
-                st.markdown("## **Data Analysis - Interactive bar chart for showing Dairy Content in the European Union.**")
+                st.markdown("## **Interactive bar chart for showing Dairy Content in the European Union.**")
 
                 col1, col2 = st.columns([3, 1])
 
@@ -832,10 +832,11 @@ elif choice == "TEST":
         st.divider()
 
 
-        with st.expander("Dairy Prices and Cheddar Prices across the European Union", expanded=True):
+        with st.expander("Data Analysis - Dairy Prices and Cheddar Prices across the European Union", expanded=True):
 
             st.info("**Pro-Tip:** Use the filters to see dairy prices across Europe")
 
+            st.markdown("## **Data tables showing Dairy Prices and Cheddar Prices across in the European Union.**")
 
             col1, col2 = st.columns([1, 1])
 
