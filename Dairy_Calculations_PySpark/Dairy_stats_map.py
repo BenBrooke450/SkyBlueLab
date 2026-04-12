@@ -71,7 +71,7 @@ def get_dairy_stats(year : int, country : str):
         y="value",
         color="unit",
         barmode="group",
-        title=f"Dairy System Breakdown — {selected_country}"
+        title=f"Dairy System Breakdown — {country}"
     )
 
     fig.update_layout(

@@ -740,7 +740,7 @@ elif choice == "TEST":
                 )
 
             with col2:
-                generate_clicked = st.button("Run Spark Job", use_container_width=True, type="primary")
+                generate_clicked = st.button("Run Spark Job - Dairy Data", use_container_width=True, type="primary")
 
         if generate_clicked:
             status_text = st.empty()
@@ -766,10 +766,6 @@ elif choice == "TEST":
 
         st.write("")
 
-        st.divider()
-
-        st.write("")
-
         with st.container(border=True):
 
             st.markdown(""" **Data Analysis - SCRIPT TO WRITE **""")
@@ -786,7 +782,7 @@ elif choice == "TEST":
                 )
 
             with col2:
-                generate_clicked_button = st.button("Run Spark Job", use_container_width=True, type="primary")
+                generate_clicked_button = st.button("Run Spark Job - Dairy price Data ", use_container_width=True, type="primary")
 
         if generate_clicked_button:
             status_text = st.empty()
@@ -811,7 +807,6 @@ elif choice == "TEST":
         st.divider()
 
         st.write("")
-
 
         col1, col2 = st.columns([1, 1])
 
