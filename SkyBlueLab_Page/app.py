@@ -742,7 +742,7 @@ elif choice == "TEST":
                 )
 
             with col2:
-                generate_clicked = st.button("Run Spark Job - Dairy Data", use_container_width=True, type="primary")
+                generate_clicked = st.button("Run Spark Job - Dairy Data", key="Dairy_Data",use_container_width=True, type="primary")
 
         if generate_clicked:
             status_text = st.empty()
@@ -784,7 +784,7 @@ elif choice == "TEST":
                 )
 
             with col2:
-                generate_clicked_button = st.button("Run Spark Job - Dairy Price Data ", use_container_width=True, type="primary")
+                generate_clicked_button = st.button("Run Spark Job - Dairy Price Data",key="Dairy_Price_Data", use_container_width=True, type="primary")
 
         if generate_clicked_button:
             status_text_Price = st.empty()
