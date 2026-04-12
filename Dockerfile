@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

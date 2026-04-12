@@ -630,11 +630,36 @@ elif choice == "TEST":
 
     if st.session_state.test:
 
-        st.info('Market data on European agriculture provided by the European Commission:'
-                ' \n * https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html '
-                ' \n * https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en '
-                ' \n * https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download'
-                ' \n\n TO WRITE A SCRIPT')
+        with st.expander("Summary", expanded=True):
+            st.info("""
+            Market data on European agriculture provided by the European Commission:
+    
+            * https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html  
+            * https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en  
+            * https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download  
+    
+            ---
+    
+            ### Project Summary: End-to-End AI & Data Engineering Platform
+    
+            This project is a full-stack data engineering and machine learning platform designed to ingest, process, and analyse real-time data through scalable cloud infrastructure.
+    
+            The system uses Scaleway as the backend engine. Real-time and historical data are collected via external APIs, ensuring that the system continuously operates on up-to-date information.
+    
+            A distributed data processing pipeline is implemented using Apache Spark with PySpark, where raw data is cleaned, transformed, and structured into analysis-ready formats. This ETL layer is designed for scalability and performance.
+    
+            On top of this data layer, machine learning and deep learning models are developed using both scikit-learn and PyTorch. Traditional ML techniques are applied for predictive analytics, while neural networks are used for more advanced modelling tasks.
+    
+            Overall, this project demonstrates a production-style architecture, combining:
+    
+            * Cloud infrastructure (Scaleway)  
+            * Real-time API ingestion  
+            * Distributed data processing (Spark)  
+            * Machine learning & deep learning (scikit-learn, PyTorch)  
+            * Interactive data applications (Streamlit)  
+            * LLM integration for intelligent assistance  
+    
+            """)
 
         st.divider()
 
@@ -666,6 +691,9 @@ elif choice == "TEST":
 
         else:
             st.info("Select a year and click 'Generate Report' to start the PySpark job.")
+
+
+        st.divider()
 
         col1, col2 = st.columns([1, 1])
 
