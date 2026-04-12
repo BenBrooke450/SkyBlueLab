@@ -309,6 +309,9 @@ def map_of_europe():
 
         rh_list = region_to_humidity.get(nuts_id)
 
+        if rh_list is None:
+            continue
+
         climate = next((k for k, v in humidity_profiles.items() if v is rh_list),"Continental_Standard")
 
         temp_list = temperature_profiles[climate]
