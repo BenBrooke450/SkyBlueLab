@@ -615,10 +615,10 @@ elif choice == "TEST":
         st.session_state.test = False
 
     if "dairy_reports" not in st.session_state:
-        st.session_state.dairy_reports = []
+        st.session_state.dairy_reports = None
 
     if "price_reports" not in st.session_state:
-        st.session_state.price_reports = []
+        st.session_state.price_reports = None
 
     if "expanded" not in st.session_state:
         st.session_state.expanded = True
@@ -633,45 +633,46 @@ elif choice == "TEST":
                 st.rerun()
             else:
                 st.error("Invalid Code")
+
     else:
         if st.button("Secure Log Out", use_container_width=True):
             st.session_state.test = False
             st.rerun()
 
     if st.session_state.test:
-
         with st.expander("Summary", expanded=True):
             st.info("""
-            Market data on European agriculture provided by the European Commission:
+                        Market data on European agriculture provided by the European Commission:
 
-            * https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html
-            * https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en
-            * https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download
+                        * https://agridata.ec.europa.eu/extensions/DataPortal/agricultural_markets.html
+                        * https://ec.europa.eu/eurostat/databrowser/view/apro_mk_colm/default/table?lang=en
+                        * https://cds.climate.copernicus.eu/datasets/reanalysis-uerra-europe-single-levels?tab=download
 
-            ---
+                        ---
 
-            ### Project Summary: End-to-End AI & Data Engineering Platform
+                        ### Project Summary: End-to-End AI & Data Engineering Platform
 
-            This project is a full-stack data engineering and machine learning platform designed to ingest, process, and analyse real-time data through scalable cloud infrastructure.
+                        This project is a full-stack data engineering and machine learning platform designed to ingest, process, and analyse real-time data through scalable cloud infrastructure.
 
-            The system uses Scaleway as the backend engine. Real-time and historical data are collected via external APIs, ensuring that the system continuously operates on up-to-date information.
+                        The system uses Scaleway as the backend engine. Real-time and historical data are collected via external APIs, ensuring that the system continuously operates on up-to-date information.
 
-            A distributed data processing pipeline is implemented using Apache Spark with PySpark, where raw data is cleaned, transformed, and structured into analysis-ready formats. This ETL layer is designed for scalability and performance.
+                        A distributed data processing pipeline is implemented using Apache Spark with PySpark, where raw data is cleaned, transformed, and structured into analysis-ready formats. This ETL layer is designed for scalability and performance.
 
-            On top of this data layer, machine learning and deep learning models are developed using both scikit-learn and PyTorch. Traditional ML techniques are applied for predictive analytics, while neural networks are used for more advanced modelling tasks.
+                        On top of this data layer, machine learning and deep learning models are developed using both scikit-learn and PyTorch. Traditional ML techniques are applied for predictive analytics, while neural networks are used for more advanced modelling tasks.
 
-            Overall, this project demonstrates a production-style architecture, combining:
+                        Overall, this project demonstrates a production-style architecture, combining:
 
-            * Cloud infrastructure (Scaleway)
-            * Real-time API ingestion
-            * Distributed data processing (Spark)
-            * Machine learning & deep learning (scikit-learn, PyTorch)
-            * Interactive data applications (Streamlit)
-            * LLM integration for intelligent assistance
+                        * Cloud infrastructure (Scaleway)
+                        * Real-time API ingestion
+                        * Distributed data processing (Spark)
+                        * Machine learning & deep learning (scikit-learn, PyTorch)
+                        * Interactive data applications (Streamlit)
+                        * LLM integration for intelligent assistance
 
-            """)
+                        """)
 
-            st.warning("I used Apache Spark instead of Databricks, as both are built on Spark but the free-tier UI in Databricks is very limited. I implemented all ETL pipelines using PySpark.")
+            st.warning(
+                "I used Apache Spark instead of Databricks, as both are built on Spark but the free-tier UI in Databricks is very limited. I implemented all ETL pipelines using PySpark.")
 
         st.divider()
 
@@ -680,7 +681,6 @@ elif choice == "TEST":
             st.markdown("**Interactive map for THI using seasonal temperatures and humidity from EuroStats.**")
 
             fig = map_of_europe()
-
             st.plotly_chart(fig, use_container_width=True)
 
         st.divider()
@@ -691,9 +691,9 @@ elif choice == "TEST":
 
             col1, col2 = st.columns([3, 1])
 
-            YEARS = list(range(2020, 2024))
+            YEARS = list(range(2020, 2025))
 
-            COUNTRIES =  [
+            COUNTRIES = [
                 "Belgium","Bulgaria","Czechia","Denmark","Germany","Estonia",
                 "Ireland","Greece","Spain","France","Croatia","Italy","Cyprus",
                 "Latvia","Lithuania","Luxembourg","Hungary","Malta","Netherlands",
@@ -722,14 +722,15 @@ elif choice == "TEST":
                 generate_clicked = st.button("Run Spark Job - Dairy Data", key="Dairy_Data", use_container_width=True, type="primary")
 
         if generate_clicked:
+
             fig, df_filtered = get_dairy_stats(selected_year, selected_country)
 
-            st.session_state.dairy_reports.append({
+            st.session_state.dairy_reports = {
                 "year": selected_year,
                 "country": selected_country,
                 "fig": fig,
                 "df": df_filtered
-            })
+            }
 
             st.toast(f"Data for {selected_year} & {selected_country} processed successfully!")
             st.rerun()
@@ -737,7 +738,9 @@ elif choice == "TEST":
         else:
             st.info("**Pro-Tip:** This report uses a distributed Spark engine to process large-scale stats data.")
 
-        for r in st.session_state.dairy_reports:
+        if st.session_state.dairy_reports is not None:
+            r = st.session_state.dairy_reports
+
             st.plotly_chart(r["fig"], use_container_width=True)
 
             with st.expander(f"View Spark Output (Raw Data: {r['year']} & {r['country']})", expanded=False):
@@ -765,13 +768,14 @@ elif choice == "TEST":
                 generate_clicked_button = st.button("Run Spark Job - Dairy Price Data", key="Dairy_Price_Data", use_container_width=True, type="primary")
 
         if generate_clicked_button:
+
             fig, final_df_for_table = get_cheddar_price(selected_year)
 
-            st.session_state.price_reports.append({
+            st.session_state.price_reports = {
                 "year": selected_year,
                 "fig": fig,
                 "df": final_df_for_table
-            })
+            }
 
             st.toast(f"Data for {selected_year} processed successfully!")
             st.rerun()
@@ -779,7 +783,9 @@ elif choice == "TEST":
         else:
             st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
 
-        for r in st.session_state.price_reports:
+        if st.session_state.price_reports is not None:
+            r = st.session_state.price_reports
+
             st.plotly_chart(r["fig"], use_container_width=True)
 
             with st.expander(f"View Spark Output (Raw Data: {r['year']})", expanded=False):
