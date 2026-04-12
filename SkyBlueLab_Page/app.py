@@ -612,9 +612,23 @@ elif choice == "RESEARCH & CERTIFICATES":
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 elif choice == "TEST":
-
-
 
 
 
@@ -630,7 +644,14 @@ elif choice == "TEST":
     if "expanded" not in st.session_state:
         st.session_state.expanded = True
 
+    if "dairy_yield_reports" not in st.session_state:
+        st.session_state.dairy_yield_reports = None
 
+    if "energy_price_reports" not in st.session_state:
+        st.session_state.energy_price_reports= None
+
+    if "weather_reports" not in st.session_state:
+        st.session_state.weather_reports= None
 
 
 
@@ -706,7 +727,7 @@ elif choice == "TEST":
 
         with st.expander("Data Analysis - European Dairy Heat Stress (THI)", expanded=True):
 
-            st.markdown("## **Interactive map for THI calculated using seasonal temperatures and humidity from EuroStats.**")
+            st.markdown("##### **Interactive map for THI calculated using seasonal temperatures and humidity from EuroStats.**")
 
             fig = map_of_europe()
             st.plotly_chart(fig, use_container_width=True)
@@ -733,7 +754,7 @@ elif choice == "TEST":
 
             with st.container(border=True):
 
-                st.markdown("#### **Interactive map for comparative market analysis of cheese price volatility across the European Union.**")
+                st.markdown("##### **Interactive map for comparative market analysis of cheese price volatility across the European Union.**")
 
                 col1, col2 = st.columns([3, 1])
 
@@ -801,7 +822,7 @@ elif choice == "TEST":
 
             with st.container(border=True):
 
-                st.markdown("#### **Interactive bar chart for showing Dairy content in the European Union.**")
+                st.markdown("##### **Interactive bar chart for showing Dairy content in the European Union.**")
 
                 col1, col2 = st.columns([3, 1])
 
@@ -883,7 +904,7 @@ elif choice == "TEST":
 
             st.info("**Pro-Tip:** Use the filters to see Dairy Prices and Cheddar Prices across across Europe")
 
-            st.markdown("#### **Data tables showing Dairy Prices and Cheddar Prices across the European Union.**")
+            st.markdown("##### **Data tables showing Dairy Prices and Cheddar Prices across the European Union.**")
 
             col1, col2 = st.columns([1, 1])
 
