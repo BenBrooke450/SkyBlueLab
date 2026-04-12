@@ -694,7 +694,7 @@ elif choice == "TEST":
 
 
 
-        with st.expander("European Dairy Heat Stress (THI)", expanded=True):
+        with st.expander("Data Analysis - European Dairy Heat Stress (THI)", expanded=True):
 
             st.markdown("## **Interactive map for THI calculated using seasonal temperatures and humidity from EuroStats.**")
 
@@ -713,7 +713,7 @@ elif choice == "TEST":
 
             with st.container(border=True):
 
-                st.markdown("## **Comparative market analysis of cheese price volatility across the European Union.**")
+                st.markdown("#### **Interactive map for comparative market analysis of cheese price volatility across the European Union.**")
 
                 col1, col2 = st.columns([3, 1])
 
@@ -766,7 +766,7 @@ elif choice == "TEST":
 
             with st.container(border=True):
 
-                st.markdown("## **Interactive bar chart for showing Dairy Content in the European Union.**")
+                st.markdown("#### **Interactive bar chart for showing Dairy content in the European Union.**")
 
                 col1, col2 = st.columns([3, 1])
 
@@ -836,7 +836,7 @@ elif choice == "TEST":
 
             st.info("**Pro-Tip:** Use the filters to see dairy prices across Europe")
 
-            st.markdown("## **Data tables showing Dairy Prices and Cheddar Prices across in the European Union.**")
+            st.markdown("#### **Data tables showing Dairy Prices and Cheddar Prices across in the European Union.**")
 
             col1, col2 = st.columns([1, 1])
 
