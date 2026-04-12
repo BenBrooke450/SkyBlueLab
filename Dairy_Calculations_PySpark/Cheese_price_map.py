@@ -46,6 +46,8 @@ def get_cheddar_price(year : int):
 
     pdf = df_transformed.select("Date_Parsed", "Price_Numeric", "memberStateName", "product", "weekNumber").toPandas()
 
+    final_df_for_table = df_cheese.toPandas()
+
     spark.stop()
 
     fig = px.line(
@@ -73,7 +75,7 @@ def get_cheddar_price(year : int):
         template="plotly_white"
     )
 
-    return fig, df_cheese
+    return fig, final_df_for_table
 
 
 
