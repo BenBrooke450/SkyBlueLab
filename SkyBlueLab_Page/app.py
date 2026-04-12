@@ -13,6 +13,9 @@ import os
 from Dairy_Calculations_PySpark.THI_map import map_of_europe
 from Dairy_Calculations_PySpark.Cheese_price_map import get_cheddar_price
 from Dairy_Calculations_PySpark.Dairy_stats_map import get_dairy_stats
+from Dairy_Calculations_PySpark.Energy_price import get_energy_price
+from Dairy_Calculations_PySpark.weather_table import get_weather_data
+from Dairy_Calculations_PySpark.Yield_features import get_yield_stats
 
 
 
@@ -633,6 +636,9 @@ elif choice == "TEST":
 
 
 
+
+
+
     if not st.session_state.test:
         st.warning("Access Restricted")
         pin = st.text_input("Enter Access Code", type="password")
@@ -648,6 +654,10 @@ elif choice == "TEST":
         if st.button("Secure Log Out", use_container_width=True):
             st.session_state.test = False
             st.rerun()
+
+
+
+
 
     if st.session_state.test:
         with st.expander("Summary", expanded=True):
@@ -680,7 +690,7 @@ elif choice == "TEST":
                         """)
 
             st.warning(
-                "**This system uses Apache Spark instead of Databricks, as both are built on Spark but the free-tier UI in Databricks is very limited. I implemented all ETL pipelines using PySpark that clean and process all the ingested data.**")
+                "**This system uses Apache Spark instead of Databricks, as both are built on Spark but the free-tier UI in Databricks is very limited. I implemented all ETL pipelines using PySpark that cleans and processes all the ingested data.**")
 
 
 
@@ -706,6 +716,9 @@ elif choice == "TEST":
 
 
         st.divider()
+
+
+
 
 
 
@@ -759,7 +772,11 @@ elif choice == "TEST":
 
 
 
+
         st.divider()
+
+
+
 
 
         with st.expander("Data Analysis - Dairy Content Breakdown", expanded=True):
@@ -829,14 +846,23 @@ elif choice == "TEST":
                     st.dataframe(r["df"].head(500), use_container_width=True)
 
 
+
+
+
+
         st.divider()
+
+
+
+
+
 
 
         with st.expander("Data Analysis - Dairy Prices and Cheddar Prices across the European Union", expanded=True):
 
-            st.info("**Pro-Tip:** Use the filters to see dairy prices across Europe")
+            st.info("**Pro-Tip:** Use the filters to see Dairy Prices and Cheddar Prices across across Europe")
 
-            st.markdown("#### **Data tables showing Dairy Prices and Cheddar Prices across in the European Union.**")
+            st.markdown("#### **Data tables showing Dairy Prices and Cheddar Prices across the European Union.**")
 
             col1, col2 = st.columns([1, 1])
 
@@ -916,3 +942,181 @@ elif choice == "TEST":
                         st.dataframe(df)
                     except Exception as e:
                         st.error(f"Error fetching data: {e}")
+
+
+
+
+        st.divider()
+
+
+
+
+        with st.expander("Model - Dairy Yields across the European Union", expanded=True):
+
+            with st.container(border=True):
+
+                col1, col2 = st.columns([3, 1])
+
+                YEARS = list(range(2020, 2026))
+
+                with col1:
+                    selected_year = st.selectbox(
+                        "Select Period:",
+                        options=YEARS,
+                        index=YEARS.index(2023),
+                        label_visibility="collapsed"
+                    )
+
+                with col2:
+                    generate_clicked_button = st.button("Run Spark Job - Dairy Yield Data", key="Dairy_Yield_Data", use_container_width=True, type="primary")
+
+            if generate_clicked_button:
+
+                status_text = st.empty()
+                status_text.status(f"Running Spark Session for {selected_year}...", expanded=True)
+
+                final_df_for_table = get_yield_stats(selected_year)
+
+                st.session_state.dairy_yield_reports = {
+                    "year": selected_year,
+                    "df": final_df_for_table
+                }
+
+                st.toast(f"Data for {selected_year} processed successfully!")
+                st.rerun()
+
+            else:
+                st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+
+            if st.session_state.dairy_yield_reports is not None:
+                r = st.session_state.dairy_yield_reports
+
+                st.dataframe(r["df"].head(500), use_container_width=True)
+
+
+
+
+
+        st.divider()
+
+
+
+
+
+
+        with st.expander("Model - Energy Prices across the European Union", expanded=True):
+
+
+            YEARS = list(range(2020, 2026))
+
+            selected_year = st.selectbox(
+                "Select Period:",
+                options=YEARS,
+                index=YEARS.index(2023),
+                label_visibility="collapsed"
+            )
+
+            generate_clicked_button = st.button("Run Spark Job - Energy Price Data", key="Energy_Price_Data",
+                                                use_container_width=True, type="primary")
+
+
+            if generate_clicked_button:
+
+                status_text = st.empty()
+                status_text.status(f"Running Spark Session for {selected_year}...", expanded=True)
+
+                fig, final_df_for_table = get_energy_price(selected_year)
+
+                st.session_state.energy_price_reports = {
+                    "year": selected_year,
+                    "fig": fig,
+                    "df": final_df_for_table
+                }
+
+                st.toast(f"Data for {selected_year} processed successfully!")
+                st.rerun()
+
+            else:
+                st.info("**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
+
+
+            if st.session_state.energy_price_reports is not None:
+                r = st.session_state.energy_price_reports
+
+                st.plotly_chart(r["fig"], use_container_width=True)
+
+                st.dataframe(r["df"].head(500), use_container_width=True)
+
+
+
+
+
+
+
+
+
+        st.divider()
+
+
+
+
+
+
+
+
+
+
+
+        with st.expander("Model - Weather across the European Union", expanded=True):
+
+            with st.container(border=True):
+
+                col1, col2 = st.columns([3, 1])
+
+
+                COUNTRIES = [
+                    "Belgium","Bulgaria","Czechia","Denmark","Germany","Estonia",
+                    "Ireland","Greece","Spain","France","Croatia","Italy","Cyprus",
+                    "Latvia","Lithuania","Luxembourg","Hungary","Malta","Netherlands",
+                    "Austria","Poland","Portugal","Romania","Slovenia","Slovakia",
+                    "Finland","Sweden","Iceland","Norway","Switzerland","Montenegro","North Macedonia","Albania",
+                    "Serbia","Türkiye"
+                ]
+
+                with col1:
+
+                    selected_country = st.selectbox(
+                        "Select Country:",
+                        options=COUNTRIES,
+                        index=COUNTRIES.index("Germany"),
+                        label_visibility="collapsed"
+                    )
+
+                with col2:
+                    generate_clicked = st.button("Run Spark Job - Weather Data", key="Weather_Data", use_container_width=True, type="primary")
+
+            if generate_clicked:
+
+                status_text = st.empty()
+                status_text.status(f"Running Spark Session for {selected_country}...", expanded=True)
+
+                df_filtered = get_weather_data(selected_country)
+
+                st.session_state.weather_reports = {
+                    "country": selected_country,
+                    "df": df_filtered
+                }
+
+                st.toast(f"Data for {selected_country} processed successfully!")
+                st.rerun()
+
+            else:
+                st.info("**Pro-Tip:** This report uses a distributed Spark engine to process large-scale stats data.")
+
+            if st.session_state.weather_reports is not None:
+                r = st.session_state.weather_reports
+
+                st.dataframe(r["df"].head(500), use_container_width=True)
+
+
+
