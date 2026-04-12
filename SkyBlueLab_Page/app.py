@@ -662,6 +662,8 @@ elif choice == "TEST":
     
             """)
 
+            st.warning("I used Apache Spark instead of Databricks, as both are built on Spark but the free-tier UI in Databricks is very limited. I implemented all ETL pipelines using PySpark.")
+
         st.write("")
 
         st.divider()
