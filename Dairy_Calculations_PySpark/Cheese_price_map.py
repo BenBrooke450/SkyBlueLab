@@ -46,7 +46,7 @@ def get_cheddar_price(year : int):
 
     pdf = df_transformed.select("Date_Parsed", "Price_Numeric", "memberStateName", "product", "weekNumber").toPandas()
 
-    final_df_for_table = df_cheese.toPandas()
+    final_df_for_table = df.toPandas()
 
     spark.stop()
 

@@ -661,7 +661,11 @@ elif choice == "TEST":
     
             """)
 
+        st.write("")
+
         st.divider()
+
+        st.write("")
 
         st.markdown(""" **Interactive map for THI using seasonal temperatures and humidity from EuroStats.**""")
 
@@ -669,7 +673,11 @@ elif choice == "TEST":
 
         st.plotly_chart(fig, use_container_width=True)
 
+        st.write("")
+
         st.divider()
+
+        st.write("")
 
         with st.container(border=True):
 
@@ -694,21 +702,24 @@ elif choice == "TEST":
             status_text.status(f"Starting Spark Session for {selected_year}...", expanded=True)
 
             with st.spinner("Processing Large-Scale Dairy Data..."):
-                fig, df_cheese = get_cheddar_price(selected_year)
+                fig, final_df_for_table = get_cheddar_price(selected_year)
 
-                # Success Toast!
                 st.toast(f"Data for {selected_year} processed successfully!")
 
                 st.plotly_chart(fig, use_container_width=True)
 
                 with st.expander(f"View Spark Output (Raw Data: {selected_year})", expanded=False):
-                    st.dataframe(df_cheese.limit(500).toPandas(), use_container_width=True)
+                    st.dataframe(final_df_for_table.head(500), use_container_width=True)
 
         else:
             st.info(
                 "**Pro-Tip:** This report uses a distributed Spark engine to calculate multi-country price trends.")
 
+        st.write("")
+
         st.divider()
+
+        st.write("")
 
         col1, col2 = st.columns([1, 1])
 
