@@ -715,7 +715,14 @@ elif choice == "TEST":
 
 
 
+
+
+
         st.divider()
+
+
+
+
 
 
 
@@ -773,7 +780,18 @@ elif choice == "TEST":
 
 
 
+
+
+
+
+
         st.divider()
+
+
+
+
+
+
 
 
 
@@ -851,6 +869,9 @@ elif choice == "TEST":
 
 
         st.divider()
+
+
+
 
 
 
@@ -964,7 +985,8 @@ elif choice == "TEST":
                         "Select Period:",
                         options=YEARS,
                         index=YEARS.index(2023),
-                        label_visibility="collapsed"
+                        label_visibility="collapsed",
+                        key="Dairy_Yield_Data_button"
                     )
 
                 with col2:
@@ -997,7 +1019,12 @@ elif choice == "TEST":
 
 
 
+
+
         st.divider()
+
+
+
 
 
 
@@ -1013,11 +1040,11 @@ elif choice == "TEST":
                 "Select Period:",
                 options=YEARS,
                 index=YEARS.index(2023),
-                label_visibility="collapsed"
+                label_visibility="collapsed",
+                key="Dairy_Energy_Data_button"
             )
 
-            generate_clicked_button = st.button("Run Spark Job - Energy Price Data", key="Energy_Price_Data",
-                                                use_container_width=True, type="primary")
+            generate_clicked_button = st.button("Run Spark Job - Energy Price Data", key="Energy_Price_Data",use_container_width=True, type="primary")
 
 
             if generate_clicked_button:
@@ -1089,7 +1116,8 @@ elif choice == "TEST":
                         "Select Country:",
                         options=COUNTRIES,
                         index=COUNTRIES.index("Germany"),
-                        label_visibility="collapsed"
+                        label_visibility="collapsed",
+                        key="Weather_Data_button"
                     )
 
                 with col2:
