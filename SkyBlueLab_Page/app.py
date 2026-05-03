@@ -1163,7 +1163,7 @@ elif choice == "TEST":
                 st.rerun()
 
             else:
-                st.info("This report uses a distributed Spark engine to process large-scale stats data. abc")
+                st.info("This report uses a distributed Spark engine to process large-scale stats data.")
 
             if st.session_state.weather_reports is not None:
                 r = st.session_state.weather_reports
